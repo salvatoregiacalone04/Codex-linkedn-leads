@@ -3,6 +3,7 @@ import {
   Bell,
   Bookmark,
   CheckCircle2,
+  Clock,
   Filter,
   Home,
   LayoutList,
@@ -36,6 +37,7 @@ const stages = ['Da contattare', 'In conversazione', 'Opportunita'];
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [period, setPeriod] = useState('Oggi');
+  const [selectedTime, setSelectedTime] = useState(() => new Date(new Date().setHours(9, 0, 0, 0)));
 
   return (
     <main className="mobile-shell" aria-label="Dashboard mobile LinkedIn leads">
@@ -52,16 +54,7 @@ export function App() {
         </button>
       </header>
 
-      <section className="summary-panel" aria-label="Riepilogo pipeline">
-        <div>
-          <p>Pipeline attiva</p>
-          <strong>0 lead</strong>
-        </div>
-        <button className="primary-action" type="button">
-          <Plus size={18} />
-          Nuova lista
-        </button>
-      </section>
+      <TimePickerPanel date={selectedTime} setDate={setSelectedTime} />
 
       <section className="metric-grid" aria-label="Metriche principali">
         {metrics.map((metric) => (
@@ -119,6 +112,208 @@ export function App() {
     </main>
   );
 }
+
+function isValidHour(value) {
+  return /^(0[0-9]|1[0-9]|2[0-3])$/.test(value);
+}
+
+function isValidMinuteOrSecond(value) {
+  return /^[0-5][0-9]$/.test(value);
+}
+
+function getValidNumber(value, { max, min = 0, loop = false }) {
+  let numericValue = parseInt(value, 10);
+
+  if (!Number.isNaN(numericValue)) {
+    if (!loop) {
+      if (numericValue > max) numericValue = max;
+      if (numericValue < min) numericValue = min;
+    } else {
+      if (numericValue > max) numericValue = min;
+      if (numericValue < min) numericValue = max;
+    }
+    return numericValue.toString().padStart(2, '0');
+  }
+
+  return '00';
+}
+
+function getValidHour(value) {
+  if (isValidHour(value)) return value;
+  return getValidNumber(value, { max: 23 });
+}
+
+function getValidMinuteOrSecond(value) {
+  if (isValidMinuteOrSecond(value)) return value;
+  return getValidNumber(value, { max: 59 });
+}
+
+function getValidArrowNumber(value, { min, max, step }) {
+  let numericValue = parseInt(value, 10);
+  if (!Number.isNaN(numericValue)) {
+    numericValue += step;
+    return getValidNumber(String(numericValue), { min, max, loop: true });
+  }
+  return '00';
+}
+
+function getDateByType(date, type) {
+  switch (type) {
+    case 'minutes':
+      return getValidMinuteOrSecond(String(date.getMinutes()));
+    case 'seconds':
+      return getValidMinuteOrSecond(String(date.getSeconds()));
+    case 'hours':
+      return getValidHour(String(date.getHours()));
+    default:
+      return '00';
+  }
+}
+
+function getArrowByType(value, step, type) {
+  switch (type) {
+    case 'minutes':
+    case 'seconds':
+      return getValidArrowNumber(value, { min: 0, max: 59, step });
+    case 'hours':
+      return getValidArrowNumber(value, { min: 0, max: 23, step });
+    default:
+      return '00';
+  }
+}
+
+function setDateByType(date, value, type) {
+  const nextDate = new Date(date);
+
+  switch (type) {
+    case 'minutes':
+      nextDate.setMinutes(parseInt(getValidMinuteOrSecond(value), 10));
+      return nextDate;
+    case 'seconds':
+      nextDate.setSeconds(parseInt(getValidMinuteOrSecond(value), 10));
+      return nextDate;
+    case 'hours':
+      nextDate.setHours(parseInt(getValidHour(value), 10));
+      return nextDate;
+    default:
+      return nextDate;
+  }
+}
+
+function TimePickerPanel({ date, setDate }) {
+  const hourRef = React.useRef(null);
+  const minuteRef = React.useRef(null);
+  const secondRef = React.useRef(null);
+
+  return (
+    <section className="time-picker-panel" aria-label="Selettore orario">
+      <div className="time-picker-copy">
+        <span className="time-picker-icon">
+          <Clock size={21} />
+        </span>
+        <div>
+          <p>Time picker</p>
+          <strong>
+            {getDateByType(date, 'hours')}:{getDateByType(date, 'minutes')}:{getDateByType(date, 'seconds')}
+          </strong>
+        </div>
+      </div>
+      <div className="time-picker-controls">
+        <TimePickerInput
+          label="Ore"
+          picker="hours"
+          date={date}
+          setDate={setDate}
+          ref={hourRef}
+          onRightFocus={() => minuteRef.current?.focus()}
+        />
+        <TimePickerInput
+          label="Min"
+          picker="minutes"
+          date={date}
+          setDate={setDate}
+          ref={minuteRef}
+          onLeftFocus={() => hourRef.current?.focus()}
+          onRightFocus={() => secondRef.current?.focus()}
+        />
+        <TimePickerInput
+          label="Sec"
+          picker="seconds"
+          date={date}
+          setDate={setDate}
+          ref={secondRef}
+          onLeftFocus={() => minuteRef.current?.focus()}
+        />
+      </div>
+    </section>
+  );
+}
+
+const TimePickerInput = React.forwardRef(function TimePickerInput(
+  { label, picker, date, setDate, onLeftFocus, onRightFocus },
+  ref
+) {
+  const [flag, setFlag] = useState(false);
+  const [prevIntKey, setPrevIntKey] = useState('0');
+  const calculatedValue = getDateByType(date, picker);
+
+  React.useEffect(() => {
+    if (!flag) return undefined;
+
+    const timer = window.setTimeout(() => {
+      setFlag(false);
+    }, 2000);
+
+    return () => window.clearTimeout(timer);
+  }, [flag]);
+
+  const calculateNewValue = (key) => {
+    if (picker === 'hours' && flag && calculatedValue.slice(1, 2) === '1' && prevIntKey === '0') {
+      return `0${key}`;
+    }
+
+    return !flag ? `0${key}` : calculatedValue.slice(1, 2) + key;
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Tab') return;
+
+    event.preventDefault();
+
+    if (event.key === 'ArrowRight') onRightFocus?.();
+    if (event.key === 'ArrowLeft') onLeftFocus?.();
+
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+      const step = event.key === 'ArrowUp' ? 1 : -1;
+      const newValue = getArrowByType(calculatedValue, step, picker);
+      setFlag(false);
+      setDate(setDateByType(date, newValue, picker));
+    }
+
+    if (event.key >= '0' && event.key <= '9') {
+      setPrevIntKey(event.key);
+      const newValue = calculateNewValue(event.key);
+      if (flag) onRightFocus?.();
+      setFlag((prev) => !prev);
+      setDate(setDateByType(date, newValue, picker));
+    }
+  };
+
+  return (
+    <label className="time-picker-field">
+      <span>{label}</span>
+      <input
+        ref={ref}
+        type="tel"
+        inputMode="decimal"
+        aria-label={label}
+        value={calculatedValue}
+        onChange={(event) => event.preventDefault()}
+        onKeyDown={handleKeyDown}
+      />
+    </label>
+  );
+});
 
 function HomePanel() {
   return (
