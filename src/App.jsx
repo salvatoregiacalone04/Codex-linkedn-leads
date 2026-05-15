@@ -1,295 +1,204 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  BarChart3,
-  CalendarClock,
-  ChevronDown,
-  Database,
+  Bell,
+  Bookmark,
+  CheckCircle2,
   Filter,
-  LayoutDashboard,
-  Linkedin,
+  Home,
+  LayoutList,
+  Menu,
   MessageSquareText,
   Plus,
   Search,
-  Send,
   Settings,
-  Target,
+  SlidersHorizontal,
+  TrendingUp,
   Users
 } from 'lucide-react';
-import { pipelineStages } from './data/mockData';
-import { getDashboardData } from './services/outreachRepository';
 
-const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, active: true },
-  { label: 'Lead', icon: Users },
-  { label: 'Campagne', icon: Target },
-  { label: 'Messaggi', icon: MessageSquareText },
-  { label: 'Analytics', icon: BarChart3 },
-  { label: 'Impostazioni', icon: Settings }
+const metrics = [
+  { label: 'Nuovi lead', value: '0', icon: Users, tone: 'blue' },
+  { label: 'Qualificati', value: '0', icon: CheckCircle2, tone: 'green' },
+  { label: 'Follow-up', value: '0', icon: MessageSquareText, tone: 'amber' },
+  { label: 'Conversione', value: '0%', icon: TrendingUp, tone: 'red' }
 ];
 
-const statusLabels = {
-  new: 'Nuovo',
-  connected: 'Connesso',
-  messaged: 'Messaggiato',
-  follow_up: 'Follow-up',
-  meeting: 'Meeting'
-};
+const tabs = [
+  { id: 'home', label: 'Home', icon: Home },
+  { id: 'search', label: 'Cerca', icon: Search },
+  { id: 'pipeline', label: 'Pipeline', icon: LayoutList },
+  { id: 'messages', label: 'Msg', icon: MessageSquareText },
+  { id: 'settings', label: 'Altro', icon: Settings }
+];
+
+const stages = ['Da contattare', 'In conversazione', 'Opportunita'];
 
 export function App() {
-  const [data, setData] = useState(null);
-  const [query, setQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('all');
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    getDashboardData()
-      .then(setData)
-      .catch((err) => setError(err.message));
-  }, []);
-
-  const filteredLeads = useMemo(() => {
-    if (!data) return [];
-
-    return data.leads.filter((lead) => {
-      const haystack = `${lead.name} ${lead.role} ${lead.company} ${lead.location}`.toLowerCase();
-      const matchesQuery = haystack.includes(query.toLowerCase());
-      const matchesStatus = selectedStatus === 'all' || lead.status === selectedStatus;
-
-      return matchesQuery && matchesStatus;
-    });
-  }, [data, query, selectedStatus]);
-
-  const metrics = useMemo(() => {
-    if (!data) return [];
-
-    const totalSent = data.campaigns.reduce((sum, campaign) => sum + campaign.sent, 0);
-    const totalAccepted = data.campaigns.reduce((sum, campaign) => sum + campaign.accepted, 0);
-    const totalReplies = data.campaigns.reduce((sum, campaign) => sum + campaign.replied, 0);
-    const totalMeetings = data.campaigns.reduce((sum, campaign) => sum + campaign.meetings, 0);
-    const acceptanceRate = Math.round((totalAccepted / totalSent) * 100);
-    const replyRate = Math.round((totalReplies / totalAccepted) * 100);
-
-    return [
-      { label: 'Lead attivi', value: data.leads.length, delta: '+12 questa settimana', icon: Users },
-      { label: 'Accettazione', value: `${acceptanceRate}%`, delta: `${totalAccepted}/${totalSent} inviti`, icon: Linkedin },
-      { label: 'Risposte', value: `${replyRate}%`, delta: `${totalReplies} conversazioni`, icon: MessageSquareText },
-      { label: 'Meeting', value: totalMeetings, delta: 'Pipeline qualificata', icon: CalendarClock }
-    ];
-  }, [data]);
-
-  if (error) {
-    return <Shell><div className="empty-state">Errore caricamento dati: {error}</div></Shell>;
-  }
-
-  if (!data) {
-    return <Shell><div className="empty-state">Caricamento dashboard...</div></Shell>;
-  }
+  const [activeTab, setActiveTab] = useState('home');
+  const [period, setPeriod] = useState('Oggi');
 
   return (
-    <Shell>
+    <main className="mobile-shell" aria-label="Dashboard mobile LinkedIn leads">
       <header className="topbar">
+        <button className="icon-button" type="button" aria-label="Apri menu">
+          <Menu size={22} />
+        </button>
         <div>
-          <p className="eyebrow">LinkedIn outreach</p>
-          <h1>Pipeline commerciale</h1>
+          <p className="eyebrow">LinkedIn leads</p>
+          <h1>Dashboard</h1>
         </div>
-        <div className="topbar-actions">
-          <span className="data-source"><Database size={16} /> {data.source === 'mock' ? 'Dati demo' : 'Supabase'}</span>
-          <button className="secondary-button"><Filter size={17} /> Segmenti</button>
-          <button className="primary-button"><Plus size={18} /> Nuovo lead</button>
-        </div>
+        <button className="icon-button alert" type="button" aria-label="Notifiche">
+          <Bell size={21} />
+        </button>
       </header>
 
-      <section className="metrics-grid">
+      <section className="summary-panel" aria-label="Riepilogo pipeline">
+        <div>
+          <p>Pipeline attiva</p>
+          <strong>0 lead</strong>
+        </div>
+        <button className="primary-action" type="button">
+          <Plus size={18} />
+          Nuova lista
+        </button>
+      </section>
+
+      <section className="metric-grid" aria-label="Metriche principali">
         {metrics.map((metric) => (
           <article className="metric-card" key={metric.label}>
-            <div className="metric-icon"><metric.icon size={19} /></div>
+            <span className={`metric-icon ${metric.tone}`}>
+              <metric.icon size={20} />
+            </span>
             <p>{metric.label}</p>
             <strong>{metric.value}</strong>
-            <span>{metric.delta}</span>
           </article>
         ))}
       </section>
 
-      <section className="workspace-grid">
-        <div className="main-column">
-          <section className="panel pipeline-panel">
-            <PanelHeader title="Pipeline" action="Vista Kanban" />
-            <div className="pipeline-grid">
-              {pipelineStages.map((stage) => {
-                const stageLeads = data.leads.filter((lead) => lead.status === stage.id);
-                return (
-                  <div className="stage" key={stage.id}>
-                    <div className="stage-header">
-                      <span className={`status-dot ${stage.tone}`} />
-                      <strong>{stage.label}</strong>
-                      <small>{stageLeads.length}</small>
-                    </div>
-                    {stageLeads.map((lead) => (
-                      <article className="lead-mini-card" key={lead.id}>
-                        <div>
-                          <strong>{lead.name}</strong>
-                          <span>{lead.role}</span>
-                        </div>
-                        <small>{lead.fitScore}</small>
-                      </article>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="panel">
-            <div className="table-toolbar">
-              <PanelHeader title="Lead qualificati" action={`${filteredLeads.length} risultati`} />
-              <div className="toolbar-controls">
-                <label className="search-box">
-                  <Search size={17} />
-                  <input
-                    type="search"
-                    placeholder="Cerca per nome, azienda, ruolo"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                  />
-                </label>
-                <label className="select-box">
-                  <select value={selectedStatus} onChange={(event) => setSelectedStatus(event.target.value)}>
-                    <option value="all">Tutti gli stati</option>
-                    {pipelineStages.map((stage) => (
-                      <option value={stage.id} key={stage.id}>{stage.label}</option>
-                    ))}
-                  </select>
-                  <ChevronDown size={16} />
-                </label>
-              </div>
-            </div>
-
-            <div className="lead-table">
-              <div className="lead-row lead-head">
-                <span>Lead</span>
-                <span>Azienda</span>
-                <span>Stato</span>
-                <span>Score</span>
-                <span>Prossima azione</span>
-              </div>
-              {filteredLeads.map((lead) => (
-                <div className="lead-row" key={lead.id}>
-                  <div className="person-cell">
-                    <span className="avatar">{initials(lead.name)}</span>
-                    <div>
-                      <strong>{lead.name}</strong>
-                      <small>{lead.role}</small>
-                    </div>
-                  </div>
-                  <div>
-                    <strong>{lead.company}</strong>
-                    <small>{lead.location}</small>
-                  </div>
-                  <span className={`badge ${lead.status}`}>{statusLabels[lead.status]}</span>
-                  <span className="score">{lead.fitScore}</span>
-                  <span className="next-action">{lead.nextAction}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        <aside className="side-column">
-          <section className="panel">
-            <PanelHeader title="Task prioritari" action="Oggi" />
-            <div className="task-list">
-              {data.tasks.map((task) => (
-                <article className="task-item" key={task.id}>
-                  <span className={`priority ${task.priority.toLowerCase()}`} />
-                  <div>
-                    <strong>{task.title}</strong>
-                    <small>{task.type} · {task.due}</small>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="panel">
-            <PanelHeader title="Campagne" action="3 attive" />
-            <div className="campaign-list">
-              {data.campaigns.map((campaign) => (
-                <article className="campaign-card" key={campaign.id}>
-                  <div>
-                    <strong>{campaign.name}</strong>
-                    <small>{campaign.segment}</small>
-                  </div>
-                  <div className="campaign-stats">
-                    <span>{campaign.accepted} acc.</span>
-                    <span>{campaign.replied} risp.</span>
-                    <span>{campaign.meetings} call</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="panel message-panel">
-            <PanelHeader title="Template migliori" action="Conversione" />
-            {data.messages.map((message) => (
-              <article className="message-template" key={message.id}>
-                <div>
-                  <strong>{message.title}</strong>
-                  <small>{message.channel}</small>
-                </div>
-                <span>{message.conversion}%</span>
-                <p>{message.body}</p>
-                <button className="icon-button" aria-label={`Usa ${message.title}`} title={`Usa ${message.title}`}>
-                  <Send size={16} />
-                </button>
-              </article>
-            ))}
-          </section>
-        </aside>
-      </section>
-    </Shell>
-  );
-}
-
-function Shell({ children }) {
-  return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand">
-          <div className="brand-mark"><Linkedin size={22} /></div>
-          <div>
-            <strong>LeadFlow</strong>
-            <span>Outreach CRM</span>
-          </div>
-        </div>
-        <nav>
-          {navItems.map((item) => (
-            <button className={item.active ? 'nav-item active' : 'nav-item'} key={item.label}>
-              <item.icon size={18} />
-              {item.label}
+      <section className="toolbar" aria-label="Controlli dashboard">
+        <div className="segmented" role="tablist" aria-label="Periodo">
+          {['Oggi', '7g', '30g'].map((item) => (
+            <button
+              className={period === item ? 'active' : ''}
+              type="button"
+              aria-selected={period === item}
+              onClick={() => setPeriod(item)}
+              key={item}
+            >
+              {item}
             </button>
           ))}
-        </nav>
-      </aside>
-      <main className="content">{children}</main>
-    </div>
+        </div>
+        <button className="icon-button compact" type="button" aria-label="Filtri">
+          <Filter size={19} />
+        </button>
+      </section>
+
+      <section className="content-area" aria-live="polite">
+        {activeTab === 'home' && <HomePanel />}
+        {activeTab === 'search' && <SearchPanel />}
+        {activeTab === 'pipeline' && <PipelinePanel />}
+        {activeTab === 'messages' && <MessagesPanel />}
+        {activeTab === 'settings' && <SettingsPanel />}
+      </section>
+
+      <nav className="bottom-nav" aria-label="Navigazione principale">
+        {tabs.map((tab) => (
+          <button
+            className={activeTab === tab.id ? 'active' : ''}
+            type="button"
+            aria-label={tab.label}
+            onClick={() => setActiveTab(tab.id)}
+            key={tab.id}
+          >
+            <tab.icon size={21} />
+            <span>{tab.label}</span>
+          </button>
+        ))}
+      </nav>
+    </main>
   );
 }
 
-function PanelHeader({ title, action }) {
+function HomePanel() {
   return (
-    <div className="panel-header">
-      <h2>{title}</h2>
-      <span>{action}</span>
-    </div>
+    <article className="workspace-card">
+      <PanelHeading title="Attivita" action="Vedi tutto" />
+      <div className="empty-state">
+        <div className="empty-visual">
+          <LayoutList size={42} />
+        </div>
+        <h2>Nessun dato inserito</h2>
+        <p>La dashboard e pronta per ricevere liste, metriche e attivita quando definirai i contenuti.</p>
+      </div>
+    </article>
   );
 }
 
-function initials(name) {
-  return name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+function SearchPanel() {
+  return (
+    <article className="workspace-card">
+      <PanelHeading title="Ricerca" icon={<Bookmark size={19} />} />
+      <label className="search-field">
+        <Search size={19} />
+        <input type="search" placeholder="Cerca lead o aziende" aria-label="Cerca lead o aziende" />
+      </label>
+      <div className="empty-list">Nessun criterio configurato.</div>
+    </article>
+  );
+}
+
+function PipelinePanel() {
+  return (
+    <article className="workspace-card">
+      <PanelHeading title="Pipeline" icon={<SlidersHorizontal size={19} />} />
+      <div className="stage-list">
+        {stages.map((stage) => (
+          <div className="stage-row" key={stage}>
+            <span>{stage}</span>
+            <strong>0</strong>
+          </div>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function MessagesPanel() {
+  return (
+    <article className="workspace-card">
+      <PanelHeading title="Messaggi" icon={<Plus size={19} />} />
+      <div className="empty-list">Nessuna sequenza creata.</div>
+    </article>
+  );
+}
+
+function SettingsPanel() {
+  return (
+    <article className="workspace-card">
+      <PanelHeading title="Impostazioni" />
+      <label className="toggle-row">
+        <span>Modalita revisione manuale</span>
+        <input type="checkbox" defaultChecked />
+      </label>
+      <label className="toggle-row">
+        <span>Notifiche follow-up</span>
+        <input type="checkbox" />
+      </label>
+    </article>
+  );
+}
+
+function PanelHeading({ title, action, icon }) {
+  return (
+    <div className="section-heading">
+      <h2>{title}</h2>
+      {action ? <button type="button">{action}</button> : null}
+      {icon ? (
+        <button className="icon-button compact" type="button" aria-label={title}>
+          {icon}
+        </button>
+      ) : null}
+    </div>
+  );
 }
