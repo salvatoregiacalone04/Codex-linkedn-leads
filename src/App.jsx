@@ -45,7 +45,7 @@ export function App() {
         </button>
         <div>
           <p className="eyebrow">LinkedIn leads</p>
-          <h1>Dashboard di totò</h1>
+          <h1>Dashboard di Totò</h1>
         </div>
         <button className="icon-button alert" type="button" aria-label="Notifiche">
           <Bell size={21} />

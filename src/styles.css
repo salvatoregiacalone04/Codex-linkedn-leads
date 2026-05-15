@@ -41,8 +41,8 @@ button {
 
 .topbar {
   display: grid;
-  grid-template-columns: 44px 1fr 44px;
-  gap: 12px;
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  gap: 8px;
   align-items: center;
   padding: 4px 0 16px;
 }
@@ -59,8 +59,9 @@ button {
 }
 
 .topbar h1 {
-  font-size: 26px;
+  font-size: 21px;
   line-height: 1.08;
+  white-space: nowrap;
 }
 
 .eyebrow {
