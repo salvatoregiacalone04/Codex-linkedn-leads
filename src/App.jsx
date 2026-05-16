@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Bell,
   Bookmark,
-  CheckCircle2,
   Clock,
   Filter,
   Home,
@@ -15,18 +14,7 @@ import {
   Search,
   Settings,
   SlidersHorizontal,
-  TrendingUp,
-  Users
 } from 'lucide-react';
-
-const metrics = [
-  { label: 'Prospect trovati', value: '0', icon: Users, tone: 'blue' },
-  { label: 'Inviti inviati', value: '0', icon: Plus, tone: 'green' },
-  { label: 'Accettati', value: '0', icon: CheckCircle2, tone: 'amber' },
-  { label: 'Follow-up inviati', value: '0', icon: MessageSquareText, tone: 'red' },
-  { label: 'Risposte', value: '0', icon: TrendingUp, tone: 'blue' },
-  { label: 'Qualificati', value: '0', icon: CheckCircle2, tone: 'green' }
-];
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home },
@@ -59,18 +47,6 @@ export function App() {
       </header>
 
       <TimePickerPanel date={selectedTime} setDate={setSelectedTime} />
-
-      <section className="metric-grid" aria-label="Metriche principali">
-        {metrics.map((metric) => (
-          <article className="metric-card" key={metric.label}>
-            <span className={`metric-icon ${metric.tone}`}>
-              <metric.icon size={20} />
-            </span>
-            <p>{metric.label}</p>
-            <strong>{metric.value}</strong>
-          </article>
-        ))}
-      </section>
 
       <section className="toolbar" aria-label="Controlli dashboard">
         <div className="segmented" role="tablist" aria-label="Periodo">
