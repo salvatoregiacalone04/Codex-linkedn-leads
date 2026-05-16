@@ -203,7 +203,6 @@ function setDateByType(date, value, type) {
 function TimePickerPanel({ date, setDate }) {
   const hourRef = React.useRef(null);
   const minuteRef = React.useRef(null);
-  const secondRef = React.useRef(null);
 
   return (
     <section className="time-picker-panel" aria-label="Selettore orario">
@@ -214,7 +213,7 @@ function TimePickerPanel({ date, setDate }) {
         <div>
           <p>Time picker</p>
           <strong>
-            {getDateByType(date, 'hours')}:{getDateByType(date, 'minutes')}:{getDateByType(date, 'seconds')}
+            {getDateByType(date, 'hours')}:{getDateByType(date, 'minutes')}
           </strong>
         </div>
       </div>
@@ -234,15 +233,6 @@ function TimePickerPanel({ date, setDate }) {
           setDate={setDate}
           ref={minuteRef}
           onLeftFocus={() => hourRef.current?.focus()}
-          onRightFocus={() => secondRef.current?.focus()}
-        />
-        <TimePickerInput
-          label="Sec"
-          picker="seconds"
-          date={date}
-          setDate={setDate}
-          ref={secondRef}
-          onLeftFocus={() => minuteRef.current?.focus()}
         />
       </div>
     </section>
