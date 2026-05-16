@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Bell,
   Bookmark,
+  ChevronDown,
   Clock,
   Home,
   LayoutList,
@@ -278,12 +279,14 @@ const TimePickerInput = React.forwardRef(function TimePickerInput(
 
 function HomePanel() {
   return (
-    <article className="workspace-card icp-card">
-      <header className="icp-heading">
-        <h2>Definisci il tuo ICP</h2>
-        <p>Define your ICP</p>
-      </header>
-
+    <details className="icp-card">
+      <summary className="icp-summary">
+        <span>
+          <strong>Definisci il tuo ICP</strong>
+          <small>Apri il menu e compila il profilo cliente ideale</small>
+        </span>
+        <ChevronDown size={20} aria-hidden="true" />
+      </summary>
       <form className="icp-form" onSubmit={(event) => event.preventDefault()}>
         <IcpField
           label="Ruolo target"
@@ -318,7 +321,7 @@ function HomePanel() {
           </span>
         </button>
       </form>
-    </article>
+    </details>
   );
 }
 

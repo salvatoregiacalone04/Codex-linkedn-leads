@@ -387,31 +387,81 @@ button {
   background: #100d16;
 }
 
+.content-area {
+  margin-top: 20px;
+}
+
 .icp-card {
   min-height: 0;
+  padding: 0;
+  border: 1px solid #2c2538;
+  border-radius: 8px;
+  background: #100d16;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
+  isolation: isolate;
+  overflow: hidden;
 }
 
-.icp-heading {
-  margin-bottom: 18px;
+.icp-card + .workspace-card {
+  margin-top: 14px;
 }
 
-.icp-heading h2 {
-  margin: 0;
-  font-size: 20px;
+.icp-card[open] {
+  border-color: rgba(167, 139, 250, 0.45);
+}
+
+.icp-summary {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.icp-summary::-webkit-details-marker {
+  display: none;
+}
+
+.icp-summary svg {
+  flex: 0 0 auto;
+  color: #c4b5fd;
+  transition: transform 180ms ease;
+}
+
+.icp-card[open] .icp-summary svg {
+  transform: rotate(180deg);
+}
+
+.icp-summary span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.icp-summary strong {
+  color: #f8fafc;
+  font-size: 18px;
   line-height: 1.16;
   letter-spacing: 0;
 }
 
-.icp-heading p {
-  margin: 5px 0 0;
+.icp-summary small {
   color: #a7a3b7;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 650;
+  line-height: 1.3;
 }
 
 .icp-form {
   display: grid;
-  gap: 13px;
+  gap: 12px;
+  padding: 2px 16px 16px;
+  border-top: 1px solid rgba(44, 37, 56, 0.82);
 }
 
 .icp-field {
