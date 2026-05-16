@@ -147,6 +147,8 @@ button {
 }
 
 .time-picker-panel {
+  position: relative;
+  overflow: hidden;
   display: grid;
   justify-items: center;
   gap: 12px;
@@ -158,7 +160,20 @@ button {
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.44);
 }
 
+.time-picker-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(167, 139, 250, 0.12) 42%, transparent 68%);
+  opacity: 0.8;
+  transform: translateX(-120%);
+  animation: scheduler-sweep 5.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
 .time-picker-copy {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -176,6 +191,7 @@ button {
   border-radius: 8px;
   color: #c4b5fd;
   background: rgba(124, 58, 237, 0.2);
+  animation: scheduler-pulse 2.8s ease-in-out infinite;
 }
 
 .time-picker-copy h2 {
@@ -189,6 +205,8 @@ button {
 }
 
 .time-picker-controls {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: end;
   justify-content: center;
@@ -223,11 +241,64 @@ button {
   text-align: center;
   caret-color: transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
+  animation: scheduler-input-glow 3.6s ease-in-out infinite;
+}
+
+.time-picker-field:nth-child(2) input {
+  animation-delay: 1.2s;
 }
 
 .time-picker-field input:focus {
   border-color: #a78bfa;
   background: #241b32;
+  animation: none;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.16), 0 12px 26px rgba(0, 0, 0, 0.24);
+}
+
+@keyframes scheduler-sweep {
+  0%,
+  58% {
+    transform: translateX(-120%);
+  }
+
+  74%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes scheduler-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(167, 139, 250, 0);
+    transform: translateY(0);
+  }
+
+  50% {
+    box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes scheduler-input-glow {
+  0%,
+  100% {
+    border-color: #453a58;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
+  }
+
+  50% {
+    border-color: rgba(167, 139, 250, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 18px rgba(124, 58, 237, 0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .time-picker-panel::before,
+  .time-picker-icon,
+  .time-picker-field input {
+    animation: none;
+  }
 }
 
 .metric-grid {
