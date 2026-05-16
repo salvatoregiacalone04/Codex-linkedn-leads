@@ -24,7 +24,8 @@ body {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -391,6 +392,12 @@ button {
   margin-top: 20px;
 }
 
+.home-stack {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
 .icp-card {
   min-height: 0;
   padding: 0;
@@ -485,7 +492,8 @@ button {
 }
 
 .icp-field input,
-.icp-field select {
+.icp-field select,
+.icp-field textarea {
   width: 100%;
   min-width: 0;
   min-height: 46px;
@@ -498,7 +506,15 @@ button {
   font-size: 14px;
 }
 
-.icp-field input::placeholder {
+.icp-field textarea {
+  min-height: 104px;
+  padding: 12px 13px;
+  line-height: 1.35;
+  resize: vertical;
+}
+
+.icp-field input::placeholder,
+.icp-field textarea::placeholder {
   color: #716a80;
 }
 
@@ -518,7 +534,8 @@ button {
 }
 
 .icp-field input:focus,
-.icp-field select:focus {
+.icp-field select:focus,
+.icp-field textarea:focus {
   border-color: #a78bfa;
   background-color: #1b1426;
 }
@@ -549,6 +566,89 @@ button {
   color: rgba(255, 255, 255, 0.72);
   font-size: 11px;
   font-weight: 700;
+}
+
+.weekly-performance-card {
+  display: grid;
+  gap: 13px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #2c2538;
+  border-radius: 8px;
+  background: #100d16;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+.weekly-performance-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.weekly-performance-header span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 8px;
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.18);
+}
+
+.weekly-performance-header h2 {
+  min-width: 0;
+  margin: 0;
+  color: #f8fafc;
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.acr-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #2c2538;
+  border-radius: 8px;
+  background: #17131f;
+}
+
+.acr-metric div {
+  display: grid;
+  gap: 4px;
+}
+
+.acr-metric span {
+  color: #a7a3b7;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.acr-metric strong {
+  color: #ffffff;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.acr-metric p {
+  max-width: 154px;
+  margin: 0;
+  color: #a7a3b7;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: right;
+}
+
+.weekly-performance-card > small {
+  color: #a7a3b7;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .section-heading {

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import {
+  Activity,
   Bell,
-  Bookmark,
+  BarChart3,
   ChevronDown,
+  ClipboardList,
   Clock,
   Home,
   LayoutList,
@@ -11,14 +13,13 @@ import {
   Play,
   Plus,
   Save,
-  Search,
   Settings,
   SlidersHorizontal,
 } from 'lucide-react';
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home },
-  { id: 'search', label: 'Cerca', icon: Search },
+  { id: 'search', label: 'Attività', icon: ClipboardList },
   { id: 'pipeline', label: 'Pipeline', icon: LayoutList },
   { id: 'messages', label: 'Msg', icon: MessageSquareText },
   { id: 'settings', label: 'Altro', icon: Settings }
@@ -279,7 +280,8 @@ const TimePickerInput = React.forwardRef(function TimePickerInput(
 
 function HomePanel() {
   return (
-    <details className="icp-card">
+    <div className="home-stack">
+      <details className="icp-card">
       <summary className="icp-summary">
         <span>
           <strong>Definisci il tuo ICP</strong>
@@ -321,16 +323,83 @@ function HomePanel() {
           </span>
         </button>
       </form>
-    </details>
+      </details>
+
+      <details className="icp-card">
+        <summary className="icp-summary">
+          <span>
+            <strong>Attività manuale</strong>
+            <small>Segnala cosa hai fatto fuori dall'automazione</small>
+          </span>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+        <form className="icp-form" onSubmit={(event) => event.preventDefault()}>
+          <IcpField
+            label="Connessioni inviate manualmente oggi"
+            hint="Manual connections sent today"
+            placeholder="Es. 25"
+            type="number"
+          />
+          <IcpField
+            label="Connessioni inviate manualmente questa settimana"
+            hint="Manual connections sent this week"
+            placeholder="Es. 120"
+            type="number"
+          />
+          <IcpField
+            label="Note attività manuale"
+            hint="Manual activity notes"
+            placeholder="Es. Ho inviato connessioni a founder SaaS italiani"
+            multiline
+          />
+
+          <button className="icp-submit" type="submit" aria-label="Aggiorna attività">
+            <Activity size={18} />
+            <span>
+              Aggiorna attività
+              <small>Update activity</small>
+            </span>
+          </button>
+        </form>
+      </details>
+
+      <WeeklyPerformanceCard />
+    </div>
   );
 }
 
-function IcpField({ label, hint, placeholder }) {
+function WeeklyPerformanceCard() {
+  return (
+    <article className="weekly-performance-card" aria-label="Performance settimanale">
+      <header className="weekly-performance-header">
+        <span>
+          <BarChart3 size={18} />
+        </span>
+        <h2>Performance settimanale</h2>
+      </header>
+      <div className="acr-metric">
+        <div>
+          <span>ACR</span>
+          <strong>0%</strong>
+        </div>
+        <p>Accepted Connection Rate</p>
+      </div>
+      <small>Percentuale di connessioni accettate questa settimana</small>
+      {/* ACR = connessioni accettate / connessioni inviate × 100 */}
+    </article>
+  );
+}
+
+function IcpField({ label, hint, placeholder, type = 'text', multiline = false }) {
   return (
     <label className="icp-field">
       <span>{label}</span>
       <small>{hint}</small>
-      <input type="text" placeholder={placeholder} />
+      {multiline ? (
+        <textarea placeholder={placeholder} rows={4} />
+      ) : (
+        <input type={type} placeholder={placeholder} min={type === 'number' ? '0' : undefined} />
+      )}
     </label>
   );
 }
@@ -357,12 +426,8 @@ function IcpSelect({ label, hint, options }) {
 function SearchPanel() {
   return (
     <article className="workspace-card">
-      <PanelHeading title="Ricerca" icon={<Bookmark size={19} />} />
-      <label className="search-field">
-        <Search size={19} />
-        <input type="search" placeholder="Cerca lead o aziende" aria-label="Cerca lead o aziende" />
-      </label>
-      <div className="empty-list">Nessun criterio configurato.</div>
+      <PanelHeading title="Attività" icon={<ClipboardList size={19} />} />
+      <div className="empty-list">Nessuna attività manuale salvata.</div>
     </article>
   );
 }
