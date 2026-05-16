@@ -379,6 +379,7 @@ button {
   .saxophone-card,
   .saxophone-card::before,
   .saxophone-card::after,
+  .saxophone-bg,
   .weekly-performance-card,
   .acr-trend-card,
   .weekly-performance-card::before,
@@ -580,7 +581,7 @@ button {
 .saxophone-card {
   position: relative;
   overflow: hidden;
-  min-height: 238px;
+  height: 238px;
   margin: 0;
   border: 1px solid rgba(196, 181, 253, 0.28);
   border-radius: 8px;
@@ -596,39 +597,55 @@ button {
 }
 
 .saxophone-card::before {
-  width: 190px;
-  height: 190px;
+  z-index: 1;
+  width: 210px;
+  height: 210px;
   left: 50%;
   top: 50%;
   border-radius: 50%;
-  background: rgba(168, 85, 247, 0.24);
-  filter: blur(28px);
+  background:
+    radial-gradient(circle, rgba(216, 180, 254, 0.38), rgba(168, 85, 247, 0.18) 46%, transparent 72%);
+  filter: blur(24px);
   transform: translate(-50%, -50%);
-  animation: sax-purple-light 5.6s ease-in-out infinite;
+  animation: sax-purple-cloud 5.8s ease-in-out infinite;
 }
 
 .saxophone-card::after {
-  width: 120px;
-  height: 120px;
-  left: 44%;
-  top: 44%;
+  z-index: 1;
+  width: 145px;
+  height: 145px;
+  left: 50%;
+  top: 50%;
   border-radius: 50%;
-  background: rgba(216, 180, 254, 0.18);
-  filter: blur(18px);
+  background:
+    radial-gradient(circle, rgba(236, 72, 153, 0.18), rgba(196, 181, 253, 0.14) 46%, transparent 74%);
+  filter: blur(20px);
   transform: translate(-50%, -50%);
-  animation: sax-light-drift 4.8s ease-in-out infinite;
+  animation: sax-cloud-drift 4.9s ease-in-out infinite;
 }
 
 .saxophone-card img {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: 238px;
-  padding: 0;
-  object-fit: cover;
+  height: 100%;
   object-position: center;
-  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.42)) drop-shadow(0 0 18px rgba(216, 180, 254, 0.2));
+}
+
+.saxophone-bg {
+  z-index: 0;
+  object-fit: cover;
+  opacity: 0.5;
+  filter: blur(12px) saturate(1.12) brightness(0.72);
+  transform: scale(1.08);
+}
+
+.saxophone-main {
+  z-index: 2;
+  padding: 10px 14px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.42)) drop-shadow(0 0 20px rgba(216, 180, 254, 0.26));
 }
 
 .weekly-performance-card,
@@ -919,29 +936,29 @@ button {
   line-height: 1;
 }
 
-@keyframes sax-purple-light {
+@keyframes sax-purple-cloud {
   0%,
   100% {
-    opacity: 0.55;
-    transform: translate(-54%, -48%) scale(0.96);
+    opacity: 0.58;
+    transform: translate(-58%, -46%) scale(0.92) rotate(0deg);
   }
 
   50% {
     opacity: 0.95;
-    transform: translate(-44%, -54%) scale(1.12);
+    transform: translate(-42%, -56%) scale(1.14) rotate(12deg);
   }
 }
 
-@keyframes sax-light-drift {
+@keyframes sax-cloud-drift {
   0%,
   100% {
-    opacity: 0.35;
-    transform: translate(-68%, -38%) scale(0.9);
+    opacity: 0.38;
+    transform: translate(-66%, -40%) scale(0.9);
   }
 
   50% {
-    opacity: 0.8;
-    transform: translate(-32%, -62%) scale(1.15);
+    opacity: 0.76;
+    transform: translate(-34%, -64%) scale(1.18);
   }
 }
 
