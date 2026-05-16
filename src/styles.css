@@ -585,10 +585,16 @@ button {
   max-width: 100%;
   margin: 0 auto;
   padding: 4px;
-  border: 1px solid rgba(196, 181, 253, 0.28);
+  border: 2px solid transparent;
   border-radius: 8px;
-  background: #09070d;
-  box-shadow: 0 18px 38px rgba(124, 58, 237, 0.18), 0 16px 34px rgba(0, 0, 0, 0.24);
+  background:
+    linear-gradient(#09070d, #09070d) padding-box,
+    conic-gradient(from 0deg, rgba(196, 181, 253, 0.38), #a855f7, #ec4899, #fbbf24, #c4b5fd, rgba(196, 181, 253, 0.38)) border-box;
+  background-size:
+    auto,
+    180% 180%;
+  box-shadow: 0 0 0 1px rgba(216, 180, 254, 0.14), 0 0 30px rgba(168, 85, 247, 0.28), 0 16px 34px rgba(0, 0, 0, 0.24);
+  animation: sax-gradient-border 4.8s linear infinite;
 }
 
 .saxophone-card::before,
@@ -950,6 +956,14 @@ button {
   50% {
     opacity: 0.76;
     transform: translate(-34%, -64%) scale(1.18);
+  }
+}
+
+@keyframes sax-gradient-border {
+  to {
+    background-position:
+      0 0,
+      180% 180%;
   }
 }
 
