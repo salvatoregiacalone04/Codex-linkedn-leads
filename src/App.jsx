@@ -25,7 +25,14 @@ const tabs = [
   { id: 'settings', label: 'Altro', icon: Settings }
 ];
 
-const stages = ['Da contattare', 'In conversazione', 'Opportunita'];
+const stages = [
+  'Da invitare',
+  'Invito inviato',
+  'Accettati',
+  'Follow-up inviato',
+  'In conversazione',
+  'Opportunità'
+];
 
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
