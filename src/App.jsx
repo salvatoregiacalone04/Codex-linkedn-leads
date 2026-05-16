@@ -209,9 +209,9 @@ function TimePickerPanel({ date, setDate }) {
     <section className="time-picker-panel" aria-label="Selettore orario">
       <div className="time-picker-copy">
         <span className="time-picker-icon">
-          <Clock size={18} />
+          <Clock size={16} />
         </span>
-        <h2>Start outreach at</h2>
+        <h2>Start outreach at:</h2>
       </div>
       <div className="time-picker-controls">
         <TimePickerInput

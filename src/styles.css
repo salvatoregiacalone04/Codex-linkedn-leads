@@ -149,9 +149,9 @@ button {
 .time-picker-panel {
   display: grid;
   justify-items: center;
-  gap: 18px;
-  min-height: 146px;
-  padding: 18px 16px 20px;
+  gap: 12px;
+  min-height: 0;
+  padding: 14px 16px 16px;
   border: 1px solid rgba(139, 92, 246, 0.36);
   border-radius: 8px;
   background: linear-gradient(135deg, rgba(32, 26, 45, 0.96), rgba(20, 17, 25, 0.96));
@@ -159,17 +159,18 @@ button {
 }
 
 .time-picker-copy {
-  display: grid;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
+  width: 100%;
   min-width: 0;
   text-align: center;
 }
 
 .time-picker-icon {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   display: grid;
   place-items: center;
   border-radius: 8px;
@@ -180,10 +181,11 @@ button {
 .time-picker-copy h2 {
   margin: 0;
   color: #f8fafc;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .time-picker-controls {
@@ -208,15 +210,15 @@ button {
 }
 
 .time-picker-field input {
-  width: 58px;
-  height: 46px;
+  width: 54px;
+  height: 42px;
   border: 1px solid #453a58;
   border-radius: 8px;
   outline: 0;
   color: #f8fafc;
   background: linear-gradient(180deg, #1d1727, #14101b);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
   text-align: center;
   caret-color: transparent;
