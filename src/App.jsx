@@ -332,45 +332,7 @@ function HomePanel({ date, setDate }) {
       </form>
       </details>
 
-      <IcpExampleSchema />
-
     </div>
-  );
-}
-
-function IcpExampleSchema() {
-  const exampleRows = [
-    ['Ruolo target', 'Founder, CEO, Head of Sales'],
-    ['Settore', 'SaaS B2B, consulenza, agenzie growth'],
-    ['Dimensione azienda', '11-50 dipendenti'],
-    ['Località', 'Italia ed Europa'],
-    ['Parole chiave', 'automation, outbound, sales process'],
-    ['Escludi', 'student, recruiter, intern']
-  ];
-
-  return (
-    <details className="icp-card icp-example-card">
-      <summary className="icp-summary">
-        <span>
-          <strong>Schema esemplificativo</strong>
-          <small>Apri un esempio di ICP compilato</small>
-        </span>
-        <ChevronDown size={20} aria-hidden="true" />
-      </summary>
-      <div className="icp-example-body">
-        <p>
-          Profilo ideale: aziende B2B con team commerciale piccolo, interessate ad automatizzare prospecting e follow-up su LinkedIn.
-        </p>
-        <div className="icp-example-grid">
-          {exampleRows.map(([label, value]) => (
-            <div className="icp-example-row" key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
-          ))}
-        </div>
-      </div>
-    </details>
   );
 }
 
