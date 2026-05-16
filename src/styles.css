@@ -23,7 +23,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -318,6 +319,120 @@ button {
   border: 1px solid #2c2538;
   border-radius: 8px;
   background: #100d16;
+}
+
+.icp-card {
+  min-height: 0;
+}
+
+.icp-heading {
+  margin-bottom: 18px;
+}
+
+.icp-heading h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.16;
+  letter-spacing: 0;
+}
+
+.icp-heading p {
+  margin: 5px 0 0;
+  color: #a7a3b7;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.icp-form {
+  display: grid;
+  gap: 13px;
+}
+
+.icp-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.icp-field span {
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.icp-field small {
+  color: #a7a3b7;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.icp-field input,
+.icp-field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid #2c2538;
+  border-radius: 8px;
+  outline: 0;
+  color: #f8fafc;
+  background: #17131f;
+  font-size: 14px;
+}
+
+.icp-field input::placeholder {
+  color: #716a80;
+}
+
+.icp-field select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #a7a3b7 50%),
+    linear-gradient(135deg, #a7a3b7 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 19px,
+    calc(100% - 12px) 19px;
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
+}
+
+.icp-field input:focus,
+.icp-field select:focus {
+  border-color: #a78bfa;
+  background-color: #1b1426;
+}
+
+.icp-submit {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed, #dc2626);
+  font-weight: 800;
+}
+
+.icp-submit span {
+  display: grid;
+  gap: 1px;
+  text-align: left;
+  line-height: 1.05;
+}
+
+.icp-submit small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .section-heading {

@@ -10,6 +10,7 @@ import {
   Menu,
   MessageSquareText,
   Plus,
+  Save,
   Search,
   Settings,
   SlidersHorizontal,
@@ -304,16 +305,76 @@ const TimePickerInput = React.forwardRef(function TimePickerInput(
 
 function HomePanel() {
   return (
-    <article className="workspace-card">
-      <PanelHeading title="Attivita" action="Vedi tutto" />
-      <div className="empty-state">
-        <div className="empty-visual">
-          <LayoutList size={42} />
-        </div>
-        <h2>Nessun dato inserito</h2>
-        <p>La dashboard e pronta per ricevere liste, metriche e attivita quando definirai i contenuti.</p>
-      </div>
+    <article className="workspace-card icp-card">
+      <header className="icp-heading">
+        <h2>Definisci il tuo ICP</h2>
+        <p>Define your ICP</p>
+      </header>
+
+      <form className="icp-form" onSubmit={(event) => event.preventDefault()}>
+        <IcpField
+          label="Ruolo target"
+          hint="Target role / job title"
+          placeholder="Founder, CEO, Marketing Manager..."
+        />
+        <IcpField label="Settore" hint="Industry" placeholder="SaaS, Real Estate, Consulting..." />
+        <IcpSelect label="Dimensione azienda" hint="Company size" options={['1-10', '11-50', '51-200', '200+']} />
+        <IcpField label="Località" hint="Location" placeholder="Italy, Europe, United States..." />
+        <IcpSelect
+          label="Livello di seniority"
+          hint="Seniority level"
+          options={['Founder', 'C-Level', 'Manager', 'Specialist']}
+        />
+        <IcpField label="Parole chiave" hint="Keywords" placeholder="B2B, growth, sales, automation..." />
+        <IcpField
+          label="Parole chiave da escludere"
+          hint="Excluded keywords"
+          placeholder="student, intern, recruiter..."
+        />
+        <IcpSelect
+          label="Priorità qualità lead"
+          hint="Lead quality priority"
+          options={['Volume', 'Balanced', 'High quality only']}
+        />
+
+        <button className="icp-submit" type="submit" aria-label="Salva ICP">
+          <Save size={18} />
+          <span>
+            Salva ICP
+            <small>Save ICP</small>
+          </span>
+        </button>
+      </form>
     </article>
+  );
+}
+
+function IcpField({ label, hint, placeholder }) {
+  return (
+    <label className="icp-field">
+      <span>{label}</span>
+      <small>{hint}</small>
+      <input type="text" placeholder={placeholder} />
+    </label>
+  );
+}
+
+function IcpSelect({ label, hint, options }) {
+  return (
+    <label className="icp-field">
+      <span>{label}</span>
+      <small>{hint}</small>
+      <select defaultValue="">
+        <option value="" disabled>
+          Seleziona
+        </option>
+        {options.map((option) => (
+          <option value={option} key={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 
