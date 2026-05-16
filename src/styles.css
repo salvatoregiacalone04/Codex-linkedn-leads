@@ -376,6 +376,7 @@ button {
   .time-picker-panel::after,
   .time-picker-icon,
   .time-picker-field input,
+  .weekly-performance-card,
   .weekly-performance-card::before,
   .weekly-performance-card::after {
     animation: none;
@@ -577,12 +578,18 @@ button {
   gap: 13px;
   min-width: 0;
   padding: 16px;
-  border: 1px solid rgba(196, 181, 253, 0.42);
+  border: 1px solid transparent;
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(58, 34, 91, 0.96), rgba(19, 13, 28, 0.98) 54%, rgba(86, 54, 130, 0.9)),
+    linear-gradient(135deg, rgba(58, 34, 91, 0.96), rgba(19, 13, 28, 0.98) 54%, rgba(86, 54, 130, 0.9)) padding-box,
+    conic-gradient(from 0deg, rgba(196, 181, 253, 0.28), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.52), rgba(216, 180, 254, 0.9), rgba(196, 181, 253, 0.28)) border-box,
     #100d16;
+  background-size:
+    auto,
+    180% 180%,
+    auto;
   box-shadow: 0 18px 38px rgba(76, 29, 149, 0.24), 0 16px 34px rgba(0, 0, 0, 0.22);
+  animation: weekly-gradient-border 8s linear infinite;
 }
 
 .weekly-performance-card::before,
@@ -597,16 +604,17 @@ button {
   background:
     radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px) 16px 24px / 86px 68px,
     radial-gradient(circle, rgba(216, 180, 254, 0.72) 0 1px, transparent 2px) 48px 42px / 118px 82px;
-  opacity: 0.5;
-  animation: weekly-stars-drift 12s linear infinite;
+  opacity: 0.32;
+  animation: weekly-stars-drift 16s linear infinite;
 }
 
 .weekly-performance-card::after {
   background:
-    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.9) 48%, rgba(216, 180, 254, 0.5) 50%, transparent 56%) -220px 18px / 220px 3px no-repeat,
-    linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.78) 47%, rgba(196, 181, 253, 0.42) 51%, transparent 58%) -180px 116px / 180px 2px no-repeat;
-  opacity: 0.82;
-  animation: weekly-shooting-stars 4.8s ease-in-out infinite;
+    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.78) 48%, rgba(216, 180, 254, 0.36) 50%, transparent 56%) -220px 20px / 190px 2px no-repeat,
+    linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.58) 47%, rgba(196, 181, 253, 0.28) 51%, transparent 58%) -180px 118px / 150px 2px no-repeat,
+    linear-gradient(115deg, transparent 0 43%, rgba(255, 255, 255, 0.46) 48%, rgba(216, 180, 254, 0.22) 51%, transparent 57%) -260px 72px / 130px 1px no-repeat;
+  opacity: 0.55;
+  animation: weekly-shooting-stars 7.5s ease-in-out infinite;
 }
 
 .weekly-performance-header,
@@ -695,24 +703,35 @@ button {
   }
 }
 
+@keyframes weekly-gradient-border {
+  to {
+    background-position:
+      0 0,
+      180% 180%,
+      0 0;
+  }
+}
+
 @keyframes weekly-shooting-stars {
   0%,
-  18% {
+  28% {
     background-position:
-      -220px 18px,
-      -180px 116px;
+      -220px 20px,
+      -180px 118px,
+      -260px 72px;
     opacity: 0;
   }
 
-  28% {
-    opacity: 0.9;
+  36% {
+    opacity: 0.55;
   }
 
-  48%,
+  56%,
   100% {
     background-position:
       420px 86px,
-      360px 166px;
+      360px 166px,
+      390px 132px;
     opacity: 0;
   }
 }
