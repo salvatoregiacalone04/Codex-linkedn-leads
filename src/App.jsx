@@ -46,10 +46,8 @@ export function App() {
         </button>
       </header>
 
-      <TimePickerPanel date={selectedTime} setDate={setSelectedTime} />
-
       <section className="content-area" aria-live="polite">
-        {activeTab === 'home' && <HomePanel />}
+        {activeTab === 'home' && <HomePanel date={selectedTime} setDate={setSelectedTime} />}
         {activeTab === 'search' && <SearchPanel />}
         {activeTab === 'pipeline' && <PipelinePanel />}
         {activeTab === 'messages' && <MessagesPanel />}
@@ -278,9 +276,11 @@ const TimePickerInput = React.forwardRef(function TimePickerInput(
   );
 });
 
-function HomePanel() {
+function HomePanel({ date, setDate }) {
   return (
     <div className="home-stack">
+      <TimePickerPanel date={date} setDate={setDate} />
+
       <details className="icp-card">
       <summary className="icp-summary">
         <span>
@@ -325,46 +325,49 @@ function HomePanel() {
       </form>
       </details>
 
-      <details className="icp-card">
-        <summary className="icp-summary">
-          <span>
-            <strong>Attività manuale</strong>
-            <small>Segnala cosa hai fatto fuori dall'automazione</small>
-          </span>
-          <ChevronDown size={20} aria-hidden="true" />
-        </summary>
-        <form className="icp-form" onSubmit={(event) => event.preventDefault()}>
-          <IcpField
-            label="Connessioni inviate manualmente oggi"
-            hint="Manual connections sent today"
-            placeholder="Es. 25"
-            type="number"
-          />
-          <IcpField
-            label="Connessioni inviate manualmente questa settimana"
-            hint="Manual connections sent this week"
-            placeholder="Es. 120"
-            type="number"
-          />
-          <IcpField
-            label="Note attività manuale"
-            hint="Manual activity notes"
-            placeholder="Es. Ho inviato connessioni a founder SaaS italiani"
-            multiline
-          />
-
-          <button className="icp-submit" type="submit" aria-label="Aggiorna attività">
-            <Activity size={18} />
-            <span>
-              Aggiorna attività
-              <small>Update activity</small>
-            </span>
-          </button>
-        </form>
-      </details>
-
-      <WeeklyPerformanceCard />
     </div>
+  );
+}
+
+function ManualActivityAccordion() {
+  return (
+    <details className="icp-card">
+      <summary className="icp-summary">
+        <span>
+          <strong>Attività manuale</strong>
+          <small>Segnala cosa hai fatto fuori dall'automazione</small>
+        </span>
+        <ChevronDown size={20} aria-hidden="true" />
+      </summary>
+      <form className="icp-form" onSubmit={(event) => event.preventDefault()}>
+        <IcpField
+          label="Connessioni inviate manualmente oggi"
+          hint="Manual connections sent today"
+          placeholder="Es. 25"
+          type="number"
+        />
+        <IcpField
+          label="Connessioni inviate manualmente questa settimana"
+          hint="Manual connections sent this week"
+          placeholder="Es. 120"
+          type="number"
+        />
+        <IcpField
+          label="Note attività manuale"
+          hint="Manual activity notes"
+          placeholder="Es. Ho inviato connessioni a founder SaaS italiani"
+          multiline
+        />
+
+        <button className="icp-submit" type="submit" aria-label="Aggiorna attività">
+          <Activity size={18} />
+          <span>
+            Aggiorna attività
+            <small>Update activity</small>
+          </span>
+        </button>
+      </form>
+    </details>
   );
 }
 
@@ -425,10 +428,10 @@ function IcpSelect({ label, hint, options }) {
 
 function SearchPanel() {
   return (
-    <article className="workspace-card">
-      <PanelHeading title="Attività" icon={<ClipboardList size={19} />} />
-      <div className="empty-list">Nessuna attività manuale salvata.</div>
-    </article>
+    <div className="home-stack">
+      <ManualActivityAccordion />
+      <WeeklyPerformanceCard />
+    </div>
   );
 }
 
