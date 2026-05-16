@@ -34,6 +34,13 @@ const stages = [
   'Opportunità'
 ];
 
+const acrTrendData = [
+  { week: 'S1', value: 18 },
+  { week: 'S2', value: 24 },
+  { week: 'S3', value: 21 },
+  { week: 'S4', value: 32 }
+];
+
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedTime, setSelectedTime] = useState(() => new Date(new Date().setHours(9, 0, 0, 0)));
@@ -400,6 +407,78 @@ function WeeklyPerformanceCard() {
   );
 }
 
+function AcrTrendChart() {
+  const chartWidth = 320;
+  const chartHeight = 126;
+  const points = acrTrendData.map((item, index) => {
+    const x = 24 + index * 88;
+    const y = 104 - item.value * 2.35;
+    return { ...item, x, y };
+  });
+  const linePoints = points.map((point) => `${point.x},${point.y}`).join(' ');
+  const areaPoints = `${linePoints} ${points[points.length - 1].x},110 ${points[0].x},110`;
+  const currentAcr = acrTrendData[acrTrendData.length - 1].value;
+
+  return (
+    <article className="acr-trend-card" aria-label="Andamento ACR settimanale">
+      <header className="acr-trend-header">
+        <div>
+          <h2>Andamento ACR</h2>
+          <p>Accepted Connection Rate settimanale</p>
+        </div>
+        <span>ACR attuale: {currentAcr}%</span>
+      </header>
+
+      <p className="acr-trend-copy">
+        Mostra quante connessioni vengono accettate rispetto alle 250 richieste settimanali.
+      </p>
+
+      <div className="acr-chart-wrap">
+        <svg className="acr-chart" viewBox={`0 0 ${chartWidth} ${chartHeight}`} role="img" aria-label="Trend settimanale ACR da 18% a 32%">
+          <defs>
+            <linearGradient id="acrLineGradient" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%" stopColor="#c4b5fd" />
+              <stop offset="58%" stopColor="#a855f7" />
+              <stop offset="100%" stopColor="#ec4899" />
+            </linearGradient>
+            <linearGradient id="acrAreaGradient" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor="#c084fc" stopOpacity="0.34" />
+              <stop offset="100%" stopColor="#ec4899" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {[20, 40].map((tick) => (
+            <g className="acr-chart-grid" key={tick}>
+              <line x1="22" x2="296" y1={104 - tick * 2.35} y2={104 - tick * 2.35} />
+              <text x="0" y={108 - tick * 2.35}>{tick}%</text>
+            </g>
+          ))}
+          <polygon className="acr-chart-area" points={areaPoints} />
+          <polyline className="acr-chart-line" points={linePoints} />
+          {points.map((point, index) => (
+            <g className={index === points.length - 1 ? 'acr-chart-point current' : 'acr-chart-point'} key={point.week}>
+              <circle cx={point.x} cy={point.y} r={index === points.length - 1 ? 5 : 4} />
+              <text x={point.x} y="123">{point.week}</text>
+              {index === points.length - 1 ? <text className="acr-chart-value" x={point.x - 8} y={point.y - 11}>{point.value}%</text> : null}
+            </g>
+          ))}
+        </svg>
+      </div>
+
+      <div className="acr-trend-footer">
+        <span>
+          <strong>80</strong>
+          Connessioni accettate
+        </span>
+        <span>
+          <strong>250</strong>
+          Richieste settimanali
+        </span>
+      </div>
+      {/* ACR% = connessioni accettate / 250 × 100 */}
+    </article>
+  );
+}
+
 function IcpField({ label, hint, placeholder, type = 'text', multiline = false }) {
   return (
     <label className="icp-field">
@@ -438,6 +517,7 @@ function SearchPanel() {
     <div className="home-stack">
       <ManualActivityAccordion />
       <WeeklyPerformanceCard />
+      <AcrTrendChart />
     </div>
   );
 }
