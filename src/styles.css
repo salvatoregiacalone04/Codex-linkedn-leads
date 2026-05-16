@@ -714,15 +714,15 @@ button {
 }
 
 .acr-trend-card {
-  gap: 10px;
-  padding: 14px;
+  gap: 8px;
+  padding: 10px;
 }
 
 .acr-trend-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -733,8 +733,8 @@ button {
 .acr-trend-header h2 {
   margin: 0;
   color: #f8fafc;
-  font-size: 18px;
-  line-height: 1.15;
+  font-size: 16px;
+  line-height: 1.1;
   letter-spacing: 0;
 }
 
@@ -744,20 +744,20 @@ button {
 }
 
 .acr-trend-header p {
-  margin: 5px 0 0;
-  font-size: 12px;
+  margin: 3px 0 0;
+  font-size: 11px;
   font-weight: 650;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .acr-trend-header > span {
   flex: 0 0 auto;
-  padding: 7px 9px;
+  padding: 6px 7px;
   border: 1px solid rgba(236, 72, 153, 0.34);
   border-radius: 8px;
   color: #fce7f3;
   background: rgba(236, 72, 153, 0.12);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 850;
   line-height: 1;
   white-space: nowrap;
@@ -765,15 +765,15 @@ button {
 
 .acr-trend-copy {
   margin: 0;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .acr-chart-wrap {
   width: 100%;
   min-width: 0;
-  height: 158px;
-  padding: 10px 8px 3px;
+  height: 118px;
+  padding: 8px 7px 2px;
   border: 1px solid rgba(44, 37, 56, 0.92);
   border-radius: 8px;
   background:
@@ -795,7 +795,7 @@ button {
 
 .acr-chart-grid text {
   fill: #82798f;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
 }
 
@@ -806,7 +806,7 @@ button {
 .acr-chart-line {
   fill: none;
   stroke: url("#acrLineGradient");
-  stroke-width: 4;
+  stroke-width: 3.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.48));
@@ -815,7 +815,7 @@ button {
 .acr-chart-point circle {
   fill: #17131f;
   stroke: #c4b5fd;
-  stroke-width: 3;
+  stroke-width: 2.5;
 }
 
 .acr-chart-point.current circle {
@@ -826,39 +826,39 @@ button {
 
 .acr-chart-point text {
   fill: #a7a3b7;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   text-anchor: middle;
 }
 
 .acr-chart-point .acr-chart-value {
   fill: #f8fafc;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .acr-trend-footer {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px;
+  gap: 7px;
 }
 
 .acr-trend-footer span {
   display: grid;
-  gap: 3px;
+  gap: 2px;
   min-width: 0;
-  padding: 9px;
+  padding: 7px 8px;
   border: 1px solid rgba(44, 37, 56, 0.9);
   border-radius: 8px;
   color: #a7a3b7;
   background: #17131f;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   line-height: 1.25;
 }
 
 .acr-trend-footer strong {
   color: #f8fafc;
-  font-size: 18px;
+  font-size: 15px;
   line-height: 1;
 }
 
