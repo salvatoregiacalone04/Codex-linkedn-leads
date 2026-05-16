@@ -3,7 +3,6 @@ import {
   Bell,
   Bookmark,
   Clock,
-  Filter,
   Home,
   LayoutList,
   Menu,
@@ -28,7 +27,6 @@ const stages = ['Da contattare', 'In conversazione', 'Opportunita'];
 
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [period, setPeriod] = useState('Oggi');
   const [selectedTime, setSelectedTime] = useState(() => new Date(new Date().setHours(9, 0, 0, 0)));
 
   return (
@@ -47,25 +45,6 @@ export function App() {
       </header>
 
       <TimePickerPanel date={selectedTime} setDate={setSelectedTime} />
-
-      <section className="toolbar" aria-label="Controlli dashboard">
-        <div className="segmented" role="tablist" aria-label="Periodo">
-          {['Oggi', '7g', '30g'].map((item) => (
-            <button
-              className={period === item ? 'active' : ''}
-              type="button"
-              aria-selected={period === item}
-              onClick={() => setPeriod(item)}
-              key={item}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-        <button className="icon-button compact" type="button" aria-label="Filtri">
-          <Filter size={19} />
-        </button>
-      </section>
 
       <section className="content-area" aria-live="polite">
         {activeTab === 'home' && <HomePanel />}

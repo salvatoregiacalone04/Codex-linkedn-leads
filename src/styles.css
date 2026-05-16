@@ -76,8 +76,7 @@ button {
 .icon-button,
 .primary-action,
 .section-heading button,
-.bottom-nav button,
-.segmented button {
+.bottom-nav button {
   border: 0;
 }
 
@@ -378,39 +377,6 @@ button {
   .time-picker-field input {
     animation: none;
   }
-}
-
-.toolbar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: space-between;
-  margin: 16px 0 10px;
-}
-
-.segmented {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  height: 40px;
-  padding: 4px;
-  border: 1px solid #2c2538;
-  border-radius: 8px;
-  background: #100d16;
-}
-
-.segmented button {
-  border-radius: 6px;
-  color: #a7a3b7;
-  background: transparent;
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.segmented button.active {
-  color: #ffffff;
-  background: #7c3aed;
 }
 
 .workspace-card {
