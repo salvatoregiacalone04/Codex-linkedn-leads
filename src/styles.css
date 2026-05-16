@@ -631,8 +631,8 @@ button {
   z-index: 2;
   display: block;
   width: auto;
-  max-width: min(230px, calc(100vw - 48px));
-  max-height: 300px;
+  max-width: min(190px, calc(100vw - 56px));
+  max-height: 250px;
   height: auto;
   object-fit: contain;
   object-position: center;
