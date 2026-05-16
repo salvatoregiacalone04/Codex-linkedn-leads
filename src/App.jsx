@@ -345,7 +345,7 @@ function HomePanel({ date, setDate }) {
 
 function ManualActivityAccordion() {
   return (
-    <details className="icp-card">
+    <details className="icp-card manual-activity-card">
       <summary className="icp-summary">
         <span>
           <strong>Attività manuale</strong>

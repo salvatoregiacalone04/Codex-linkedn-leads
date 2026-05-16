@@ -376,8 +376,11 @@ button {
   .time-picker-panel::after,
   .time-picker-icon,
   .time-picker-field input,
+  .manual-activity-card,
   .weekly-performance-card,
   .acr-trend-card,
+  .manual-activity-card::before,
+  .manual-activity-card::after,
   .weekly-performance-card::before,
   .weekly-performance-card::after,
   .acr-trend-card::before,
@@ -574,6 +577,7 @@ button {
   font-weight: 700;
 }
 
+.manual-activity-card,
 .weekly-performance-card,
 .acr-trend-card {
   position: relative;
@@ -595,10 +599,16 @@ button {
   animation: weekly-gradient-border 5.4s linear infinite;
 }
 
+.manual-activity-card {
+  isolation: isolate;
+}
+
 .weekly-performance-card {
   gap: 13px;
 }
 
+.manual-activity-card::before,
+.manual-activity-card::after,
 .weekly-performance-card::before,
 .weekly-performance-card::after,
 .acr-trend-card::before,
@@ -609,6 +619,7 @@ button {
   pointer-events: none;
 }
 
+.manual-activity-card::before,
 .weekly-performance-card::before,
 .acr-trend-card::before {
   background:
@@ -618,16 +629,20 @@ button {
   animation: weekly-stars-drift 16s linear infinite;
 }
 
+.manual-activity-card::after,
 .weekly-performance-card::after,
 .acr-trend-card::after {
   background:
     linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.78) 48%, rgba(216, 180, 254, 0.36) 50%, transparent 56%) -220px 20px / 190px 2px no-repeat,
     linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.58) 47%, rgba(196, 181, 253, 0.28) 51%, transparent 58%) -180px 118px / 150px 2px no-repeat,
-    linear-gradient(115deg, transparent 0 43%, rgba(255, 255, 255, 0.46) 48%, rgba(216, 180, 254, 0.22) 51%, transparent 57%) -260px 72px / 130px 1px no-repeat;
-  opacity: 0.55;
-  animation: weekly-shooting-stars 7.5s ease-in-out infinite;
+    linear-gradient(115deg, transparent 0 43%, rgba(255, 255, 255, 0.46) 48%, rgba(216, 180, 254, 0.22) 51%, transparent 57%) -260px 72px / 130px 1px no-repeat,
+    linear-gradient(115deg, transparent 0 44%, rgba(255, 255, 255, 0.5) 49%, rgba(236, 72, 153, 0.24) 52%, transparent 58%) -210px 154px / 142px 1px no-repeat;
+  opacity: 0.62;
+  animation: weekly-shooting-stars 6.8s ease-in-out infinite;
 }
 
+.manual-activity-card .icp-summary,
+.manual-activity-card .icp-form,
 .weekly-performance-header,
 .acr-metric,
 .weekly-performance-card > small,
@@ -637,6 +652,10 @@ button {
 .acr-trend-footer {
   position: relative;
   z-index: 1;
+}
+
+.manual-activity-card .icp-form {
+  background: rgba(16, 13, 22, 0.32);
 }
 
 .weekly-performance-header {
@@ -881,7 +900,8 @@ button {
     background-position:
       -220px 20px,
       -180px 118px,
-      -260px 72px;
+      -260px 72px,
+      -210px 154px;
     opacity: 0;
   }
 
@@ -894,7 +914,8 @@ button {
     background-position:
       420px 86px,
       360px 166px,
-      390px 132px;
+      390px 132px,
+      370px 198px;
     opacity: 0;
   }
 }
