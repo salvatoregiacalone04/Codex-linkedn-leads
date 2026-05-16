@@ -714,7 +714,8 @@ button {
 }
 
 .acr-trend-card {
-  gap: 12px;
+  gap: 10px;
+  padding: 14px;
 }
 
 .acr-trend-header {
@@ -771,8 +772,8 @@ button {
 .acr-chart-wrap {
   width: 100%;
   min-width: 0;
-  height: 188px;
-  padding: 12px 8px 4px;
+  height: 158px;
+  padding: 10px 8px 3px;
   border: 1px solid rgba(44, 37, 56, 0.92);
   border-radius: 8px;
   background:
@@ -845,7 +846,7 @@ button {
   display: grid;
   gap: 3px;
   min-width: 0;
-  padding: 10px;
+  padding: 9px;
   border: 1px solid rgba(44, 37, 56, 0.9);
   border-radius: 8px;
   color: #a7a3b7;
