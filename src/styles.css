@@ -924,6 +924,21 @@ button {
   font-weight: 750;
 }
 
+.pipeline-card .section-heading {
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  display: grid;
+}
+
+.pipeline-card .section-heading h2 {
+  grid-column: 2;
+  color: #c4b5fd;
+  text-align: center;
+}
+
+.pipeline-card .section-heading .icon-button {
+  grid-column: 3;
+}
+
 .empty-state {
   display: grid;
   place-items: center;

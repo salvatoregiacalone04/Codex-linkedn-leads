@@ -524,8 +524,8 @@ function SearchPanel() {
 
 function PipelinePanel() {
   return (
-    <article className="workspace-card">
-      <PanelHeading title="Pipeline" icon={<SlidersHorizontal size={19} />} />
+    <article className="workspace-card pipeline-card">
+      <PanelHeading title="Stato dei lead" icon={<SlidersHorizontal size={19} />} />
       <div className="stage-list">
         {stages.map((stage) => (
           <div className="stage-row" key={stage}>
