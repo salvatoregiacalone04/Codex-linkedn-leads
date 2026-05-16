@@ -183,15 +183,6 @@ button {
   font-weight: 700;
 }
 
-.time-picker-copy strong {
-  display: block;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
 .time-picker-controls {
   display: flex;
   align-items: end;

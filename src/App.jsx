@@ -211,10 +211,7 @@ function TimePickerPanel({ date, setDate }) {
           <Clock size={21} />
         </span>
         <div>
-          <p>Time picker</p>
-          <strong>
-            {getDateByType(date, 'hours')}:{getDateByType(date, 'minutes')}
-          </strong>
+          <p>Start outreach at</p>
         </div>
       </div>
       <div className="time-picker-controls">
