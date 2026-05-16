@@ -169,6 +169,27 @@ button {
   pointer-events: none;
 }
 
+.time-picker-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    rgba(124, 58, 237, 0.18),
+    rgba(244, 63, 94, 0.78),
+    rgba(196, 181, 253, 0.5),
+    rgba(124, 58, 237, 0.18)
+  );
+  opacity: 0.75;
+  pointer-events: none;
+  animation: scheduler-border-spin 6s linear infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
 .automation-header,
 .automation-time-row,
 .automation-start {
@@ -344,8 +365,15 @@ button {
   }
 }
 
+@keyframes scheduler-border-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .time-picker-panel::before,
+  .time-picker-panel::after,
   .time-picker-icon,
   .time-picker-field input {
     animation: none;
