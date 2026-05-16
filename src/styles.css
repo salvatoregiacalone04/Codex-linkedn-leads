@@ -150,10 +150,9 @@ button {
   position: relative;
   overflow: hidden;
   display: grid;
-  justify-items: center;
   gap: 12px;
   min-height: 0;
-  padding: 14px 16px 16px;
+  padding: 14px;
   border: 1px solid rgba(139, 92, 246, 0.36);
   border-radius: 8px;
   background: linear-gradient(135deg, rgba(32, 26, 45, 0.96), rgba(20, 17, 25, 0.96));
@@ -171,22 +170,45 @@ button {
   pointer-events: none;
 }
 
-.time-picker-copy {
+.automation-header,
+.automation-time-row,
+.automation-start {
   position: relative;
   z-index: 1;
+}
+
+.automation-header {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 8px;
-  width: 100%;
-  min-width: 0;
-  text-align: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.automation-header h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.automation-header p {
+  margin: 5px 0 0;
+  color: #a7a3b7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.automation-header p span {
+  color: #f0abfc;
 }
 
 .time-picker-icon {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: grid;
+  flex: 0 0 auto;
   place-items: center;
   border-radius: 8px;
   color: #c4b5fd;
@@ -194,30 +216,44 @@ button {
   animation: scheduler-pulse 2.8s ease-in-out infinite;
 }
 
-.time-picker-copy h2 {
-  margin: 0;
+.automation-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(69, 58, 88, 0.78);
+  border-radius: 8px;
+  background: rgba(23, 19, 31, 0.72);
+}
+
+.automation-time-label {
+  min-width: 0;
   color: #f8fafc;
-  font-size: 16px;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: 0;
-  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 760;
+  line-height: 1.2;
 }
 
 .time-picker-controls {
-  position: relative;
-  z-index: 1;
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: 100%;
+  gap: 7px;
   flex: 0 0 auto;
+}
+
+.time-picker-divider {
+  align-self: end;
+  padding-bottom: 8px;
+  color: #a7a3b7;
+  font-weight: 850;
 }
 
 .time-picker-field {
   display: grid;
-  gap: 5px;
+  gap: 4px;
   text-align: center;
 }
 
@@ -228,15 +264,15 @@ button {
 }
 
 .time-picker-field input {
-  width: 54px;
-  height: 42px;
+  width: 50px;
+  height: 38px;
   border: 1px solid #453a58;
   border-radius: 8px;
   outline: 0;
   color: #f8fafc;
   background: linear-gradient(180deg, #1d1727, #14101b);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   text-align: center;
   caret-color: transparent;
@@ -244,7 +280,23 @@ button {
   animation: scheduler-input-glow 3.6s ease-in-out infinite;
 }
 
-.time-picker-field:nth-child(2) input {
+.automation-start {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed, #dc2626);
+  font-size: 14px;
+  font-weight: 850;
+  box-shadow: 0 14px 26px rgba(124, 58, 237, 0.18);
+}
+
+.time-picker-field:last-child input {
   animation-delay: 1.2s;
 }
 

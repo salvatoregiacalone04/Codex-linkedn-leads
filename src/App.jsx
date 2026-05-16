@@ -9,6 +9,7 @@ import {
   LayoutList,
   Menu,
   MessageSquareText,
+  Play,
   Plus,
   Save,
   Search,
@@ -19,10 +20,12 @@ import {
 } from 'lucide-react';
 
 const metrics = [
-  { label: 'Nuovi lead', value: '0', icon: Users, tone: 'blue' },
-  { label: 'Qualificati', value: '0', icon: CheckCircle2, tone: 'green' },
-  { label: 'Follow-up', value: '0', icon: MessageSquareText, tone: 'amber' },
-  { label: 'Conversione', value: '0%', icon: TrendingUp, tone: 'red' }
+  { label: 'Prospect trovati', value: '0', icon: Users, tone: 'blue' },
+  { label: 'Inviti inviati', value: '0', icon: Plus, tone: 'green' },
+  { label: 'Accettati', value: '0', icon: CheckCircle2, tone: 'amber' },
+  { label: 'Follow-up inviati', value: '0', icon: MessageSquareText, tone: 'red' },
+  { label: 'Risposte', value: '0', icon: TrendingUp, tone: 'blue' },
+  { label: 'Qualificati', value: '0', icon: CheckCircle2, tone: 'green' }
 ];
 
 const tabs = [
@@ -207,30 +210,47 @@ function TimePickerPanel({ date, setDate }) {
 
   return (
     <section className="time-picker-panel" aria-label="Selettore orario">
-      <div className="time-picker-copy">
+      <header className="automation-header">
+        <div>
+          <h2>LinkedIn Outreach</h2>
+          <p>
+            Status: <span>Ready</span>
+          </p>
+        </div>
         <span className="time-picker-icon">
           <Clock size={16} />
         </span>
-        <h2>Start outreach at:</h2>
+      </header>
+
+      <div className="automation-time-row">
+        <span className="automation-time-label">Start outreach at</span>
+        <div className="time-picker-controls">
+          <TimePickerInput
+            label="Ore"
+            picker="hours"
+            date={date}
+            setDate={setDate}
+            ref={hourRef}
+            onRightFocus={() => minuteRef.current?.focus()}
+          />
+          <span className="time-picker-divider" aria-hidden="true">
+            :
+          </span>
+          <TimePickerInput
+            label="Min"
+            picker="minutes"
+            date={date}
+            setDate={setDate}
+            ref={minuteRef}
+            onLeftFocus={() => hourRef.current?.focus()}
+          />
+        </div>
       </div>
-      <div className="time-picker-controls">
-        <TimePickerInput
-          label="Ore"
-          picker="hours"
-          date={date}
-          setDate={setDate}
-          ref={hourRef}
-          onRightFocus={() => minuteRef.current?.focus()}
-        />
-        <TimePickerInput
-          label="Min"
-          picker="minutes"
-          date={date}
-          setDate={setDate}
-          ref={minuteRef}
-          onLeftFocus={() => hourRef.current?.focus()}
-        />
-      </div>
+
+      <button className="automation-start" type="button">
+        <Play size={17} fill="currentColor" />
+        Start automation
+      </button>
     </section>
   );
 }
