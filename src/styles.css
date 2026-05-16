@@ -568,6 +568,52 @@ button {
   font-weight: 700;
 }
 
+.icp-example-card {
+  background: #0f0c14;
+}
+
+.icp-example-body {
+  display: grid;
+  gap: 13px;
+  padding: 2px 16px 16px;
+  border-top: 1px solid rgba(44, 37, 56, 0.82);
+}
+
+.icp-example-body p {
+  margin: 0;
+  color: #d8d3e6;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.icp-example-grid {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+}
+
+.icp-example-row {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #2c2538;
+  border-radius: 8px;
+  background: #17131f;
+}
+
+.icp-example-row span {
+  color: #a7a3b7;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.icp-example-row strong {
+  color: #f8fafc;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
 .weekly-performance-card {
   display: grid;
   gap: 13px;
