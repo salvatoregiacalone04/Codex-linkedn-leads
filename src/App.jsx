@@ -341,8 +341,7 @@ function HomePanel({ date, setDate }) {
       </details>
 
       <figure className="saxophone-card" aria-label="Sax estetico">
-        <img className="saxophone-bg" src={saxophoneAesthetic} alt="" aria-hidden="true" />
-        <img className="saxophone-main" src={saxophoneAesthetic} alt="Sax dorato estetico con luci viola" />
+        <img src={saxophoneAesthetic} alt="Sax dorato estetico con luci viola" />
       </figure>
 
     </div>
