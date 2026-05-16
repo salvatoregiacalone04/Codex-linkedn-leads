@@ -375,7 +375,9 @@ button {
   .time-picker-panel::before,
   .time-picker-panel::after,
   .time-picker-icon,
-  .time-picker-field input {
+  .time-picker-field input,
+  .weekly-performance-card::before,
+  .weekly-performance-card::after {
     animation: none;
   }
 }
@@ -569,14 +571,49 @@ button {
 }
 
 .weekly-performance-card {
+  position: relative;
+  overflow: hidden;
   display: grid;
   gap: 13px;
   min-width: 0;
   padding: 16px;
-  border: 1px solid #2c2538;
+  border: 1px solid rgba(196, 181, 253, 0.42);
   border-radius: 8px;
-  background: #100d16;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+  background:
+    linear-gradient(135deg, rgba(58, 34, 91, 0.96), rgba(19, 13, 28, 0.98) 54%, rgba(86, 54, 130, 0.9)),
+    #100d16;
+  box-shadow: 0 18px 38px rgba(76, 29, 149, 0.24), 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+.weekly-performance-card::before,
+.weekly-performance-card::after {
+  content: "";
+  position: absolute;
+  inset: -40% -30%;
+  pointer-events: none;
+}
+
+.weekly-performance-card::before {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px) 16px 24px / 86px 68px,
+    radial-gradient(circle, rgba(216, 180, 254, 0.72) 0 1px, transparent 2px) 48px 42px / 118px 82px;
+  opacity: 0.5;
+  animation: weekly-stars-drift 12s linear infinite;
+}
+
+.weekly-performance-card::after {
+  background:
+    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.9) 48%, rgba(216, 180, 254, 0.5) 50%, transparent 56%) -220px 18px / 220px 3px no-repeat,
+    linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.78) 47%, rgba(196, 181, 253, 0.42) 51%, transparent 58%) -180px 116px / 180px 2px no-repeat;
+  opacity: 0.82;
+  animation: weekly-shooting-stars 4.8s ease-in-out infinite;
+}
+
+.weekly-performance-header,
+.acr-metric,
+.weekly-performance-card > small {
+  position: relative;
+  z-index: 1;
 }
 
 .weekly-performance-header {
@@ -594,7 +631,7 @@ button {
   place-items: center;
   border-radius: 8px;
   color: #c4b5fd;
-  background: rgba(124, 58, 237, 0.18);
+  background: rgba(196, 181, 253, 0.16);
 }
 
 .weekly-performance-header h2 {
@@ -613,9 +650,10 @@ button {
   gap: 14px;
   min-width: 0;
   padding: 13px;
-  border: 1px solid #2c2538;
+  border: 1px solid rgba(196, 181, 253, 0.26);
   border-radius: 8px;
-  background: #17131f;
+  background: rgba(23, 19, 31, 0.72);
+  backdrop-filter: blur(6px);
 }
 
 .acr-metric div {
@@ -649,6 +687,34 @@ button {
   color: #a7a3b7;
   font-size: 12px;
   line-height: 1.35;
+}
+
+@keyframes weekly-stars-drift {
+  to {
+    transform: translate3d(32px, 20px, 0);
+  }
+}
+
+@keyframes weekly-shooting-stars {
+  0%,
+  18% {
+    background-position:
+      -220px 18px,
+      -180px 116px;
+    opacity: 0;
+  }
+
+  28% {
+    opacity: 0.9;
+  }
+
+  48%,
+  100% {
+    background-position:
+      420px 86px,
+      360px 166px;
+    opacity: 0;
+  }
 }
 
 .section-heading {
