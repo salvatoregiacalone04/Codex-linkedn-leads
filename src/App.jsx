@@ -540,10 +540,55 @@ function PipelinePanel() {
 
 function MessagesPanel() {
   return (
-    <article className="workspace-card">
-      <PanelHeading title="Messaggi" icon={<Plus size={19} />} />
-      <div className="empty-list">Nessuna sequenza creata.</div>
+    <article className="workspace-card messages-card">
+      <header className="messages-header">
+        <div>
+          <h2>Messaggi automation</h2>
+          <p>Configura i testi che l'automazione userà nei tuoi outreach LinkedIn</p>
+        </div>
+        <span>
+          <MessageSquareText size={18} />
+        </span>
+      </header>
+
+      <div className="message-template-list">
+        <MessageTemplateCard
+          title="Messaggio di connessione"
+          subtitle="Connection request message"
+          placeholder="Ciao {{nome}}, ho visto il tuo profilo e penso possa esserci una buona sinergia. Ti va di connetterci?"
+          count="0 / 300"
+        />
+        <MessageTemplateCard
+          title="Follow-up dopo accettazione"
+          subtitle="Follow-up after acceptance"
+          placeholder="Ciao {{nome}}, grazie per aver accettato la connessione. Ti scrivo perché..."
+          count="0 / 600"
+        />
+      </div>
+
+      <button className="messages-save" type="button" aria-label="Salva messaggi">
+        <Save size={18} />
+        Salva messaggi
+      </button>
     </article>
+  );
+}
+
+function MessageTemplateCard({ title, subtitle, placeholder, count }) {
+  return (
+    <section className="message-template-card" aria-label={title}>
+      <header>
+        <div>
+          <h3>{title}</h3>
+          <p>{subtitle}</p>
+        </div>
+      </header>
+      <textarea placeholder={placeholder} rows={5} />
+      <div className="message-template-meta">
+        <span>{count}</span>
+        <small>Usa {'{{nome}}'} per personalizzare il messaggio</small>
+      </div>
+    </section>
   );
 }
 
