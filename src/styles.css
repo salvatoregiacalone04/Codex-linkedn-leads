@@ -377,8 +377,11 @@ button {
   .time-picker-icon,
   .time-picker-field input,
   .weekly-performance-card,
+  .acr-trend-card,
   .weekly-performance-card::before,
-  .weekly-performance-card::after {
+  .weekly-performance-card::after,
+  .acr-trend-card::before,
+  .acr-trend-card::after {
     animation: none;
   }
 }
@@ -571,11 +574,11 @@ button {
   font-weight: 700;
 }
 
-.weekly-performance-card {
+.weekly-performance-card,
+.acr-trend-card {
   position: relative;
   overflow: hidden;
   display: grid;
-  gap: 13px;
   min-width: 0;
   padding: 16px;
   border: 2px solid transparent;
@@ -592,15 +595,22 @@ button {
   animation: weekly-gradient-border 5.4s linear infinite;
 }
 
+.weekly-performance-card {
+  gap: 13px;
+}
+
 .weekly-performance-card::before,
-.weekly-performance-card::after {
+.weekly-performance-card::after,
+.acr-trend-card::before,
+.acr-trend-card::after {
   content: "";
   position: absolute;
   inset: -40% -30%;
   pointer-events: none;
 }
 
-.weekly-performance-card::before {
+.weekly-performance-card::before,
+.acr-trend-card::before {
   background:
     radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px) 16px 24px / 86px 68px,
     radial-gradient(circle, rgba(216, 180, 254, 0.72) 0 1px, transparent 2px) 48px 42px / 118px 82px;
@@ -608,7 +618,8 @@ button {
   animation: weekly-stars-drift 16s linear infinite;
 }
 
-.weekly-performance-card::after {
+.weekly-performance-card::after,
+.acr-trend-card::after {
   background:
     linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.78) 48%, rgba(216, 180, 254, 0.36) 50%, transparent 56%) -220px 20px / 190px 2px no-repeat,
     linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.58) 47%, rgba(196, 181, 253, 0.28) 51%, transparent 58%) -180px 118px / 150px 2px no-repeat,
@@ -619,7 +630,11 @@ button {
 
 .weekly-performance-header,
 .acr-metric,
-.weekly-performance-card > small {
+.weekly-performance-card > small,
+.acr-trend-header,
+.acr-trend-copy,
+.acr-chart-wrap,
+.acr-trend-footer {
   position: relative;
   z-index: 1;
 }
@@ -698,14 +713,7 @@ button {
 }
 
 .acr-trend-card {
-  display: grid;
   gap: 12px;
-  min-width: 0;
-  padding: 16px;
-  border: 1px solid rgba(196, 181, 253, 0.28);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(22, 17, 31, 0.98), rgba(14, 11, 20, 0.98));
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
 }
 
 .acr-trend-header {
