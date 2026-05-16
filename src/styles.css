@@ -376,11 +376,8 @@ button {
   .time-picker-panel::after,
   .time-picker-icon,
   .time-picker-field input,
-  .manual-activity-card,
   .weekly-performance-card,
   .acr-trend-card,
-  .manual-activity-card::before,
-  .manual-activity-card::after,
   .weekly-performance-card::before,
   .weekly-performance-card::after,
   .acr-trend-card::before,
@@ -577,7 +574,6 @@ button {
   font-weight: 700;
 }
 
-.manual-activity-card,
 .weekly-performance-card,
 .acr-trend-card {
   position: relative;
@@ -599,16 +595,10 @@ button {
   animation: weekly-gradient-border 5.4s linear infinite;
 }
 
-.manual-activity-card {
-  isolation: isolate;
-}
-
 .weekly-performance-card {
   gap: 13px;
 }
 
-.manual-activity-card::before,
-.manual-activity-card::after,
 .weekly-performance-card::before,
 .weekly-performance-card::after,
 .acr-trend-card::before,
@@ -619,7 +609,6 @@ button {
   pointer-events: none;
 }
 
-.manual-activity-card::before,
 .weekly-performance-card::before,
 .acr-trend-card::before {
   background:
@@ -629,7 +618,6 @@ button {
   animation: weekly-stars-drift 16s linear infinite;
 }
 
-.manual-activity-card::after,
 .weekly-performance-card::after,
 .acr-trend-card::after {
   background:
@@ -641,8 +629,6 @@ button {
   animation: weekly-shooting-stars 6.8s ease-in-out infinite;
 }
 
-.manual-activity-card .icp-summary,
-.manual-activity-card .icp-form,
 .weekly-performance-header,
 .acr-metric,
 .weekly-performance-card > small,
@@ -652,10 +638,6 @@ button {
 .acr-trend-footer {
   position: relative;
   z-index: 1;
-}
-
-.manual-activity-card .icp-form {
-  background: rgba(16, 13, 22, 0.32);
 }
 
 .weekly-performance-header {
@@ -733,6 +715,11 @@ button {
 
 .acr-trend-card {
   gap: 12px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(20, 15, 30, 0.46) 34%, rgba(9, 7, 13, 0.82)) padding-box,
+    conic-gradient(from 0deg, rgba(196, 181, 253, 0.54), rgba(168, 85, 247, 1), rgba(236, 72, 153, 0.86), rgba(216, 180, 254, 1), rgba(196, 181, 253, 0.54)) border-box,
+    rgba(15, 12, 22, 0.72);
+  backdrop-filter: blur(16px);
 }
 
 .acr-trend-header {
@@ -790,12 +777,15 @@ button {
   width: 100%;
   min-width: 0;
   height: 188px;
-  padding: 12px 8px 4px;
-  border: 1px solid rgba(44, 37, 56, 0.92);
+  padding: 14px 9px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 8px;
   background:
-    radial-gradient(circle at 80% 12%, rgba(236, 72, 153, 0.12), transparent 88px),
-    rgba(23, 19, 31, 0.72);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 78% 14%, rgba(236, 72, 153, 0.2), transparent 92px),
+    rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .acr-chart {
@@ -823,10 +813,10 @@ button {
 .acr-chart-line {
   fill: none;
   stroke: url("#acrLineGradient");
-  stroke-width: 4;
+  stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.48));
+  filter: drop-shadow(0 0 11px rgba(168, 85, 247, 0.68));
 }
 
 .acr-chart-point circle {
