@@ -289,17 +289,20 @@ function TimePickerPanel({ date, setDate }) {
       </div>
 
       <div className="business-days-field">
-        <span className="business-days-label">Business days</span>
-        <button
-          className="business-days-trigger"
-          type="button"
-          aria-expanded={isBusinessDaysOpen}
-          aria-controls="business-days-menu"
-          onClick={() => setIsBusinessDaysOpen((isOpen) => !isOpen)}
-        >
-          <span>{getBusinessDaysSummary(selectedBusinessDays)}</span>
-          <ChevronDown size={16} aria-hidden="true" />
-        </button>
+        <div className="automation-date-row business-days-row">
+          <span className="automation-time-label">Business days</span>
+          <span className="business-days-control">
+            <button
+              className="business-days-trigger"
+              type="button"
+              aria-expanded={isBusinessDaysOpen}
+              aria-controls="business-days-menu"
+              onClick={() => setIsBusinessDaysOpen((isOpen) => !isOpen)}
+            >
+              <span>{getBusinessDaysSummary(selectedBusinessDays)}</span>
+            </button>
+          </span>
+        </div>
 
         {isBusinessDaysOpen && (
           <div className="business-days-menu" id="business-days-menu" role="listbox" aria-multiselectable="true">
