@@ -896,6 +896,51 @@ function SettingsPanel() {
           <p>Queste preferenze influenzano il modo in cui i messaggi vengono personalizzati.</p>
         </div>
       </details>
+
+      <details className="settings-card notifications-card">
+        <summary className="settings-card-summary compact">
+          <div>
+            <h3>Notifiche</h3>
+            <p>Gestisci gli avvisi legati a connessioni, risposte e performance ACR.</p>
+          </div>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+
+        <div className="settings-card-content">
+          <label className="settings-toggle-row premium-toggle">
+            <span>Notifica quando una connessione viene accettata</span>
+            <input type="checkbox" defaultChecked />
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>Notifica quando un lead risponde</span>
+            <input type="checkbox" defaultChecked />
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>Report settimanale ACR</span>
+            <input type="checkbox" />
+          </label>
+
+          <div className="settings-notification-threshold">
+            <label className="settings-toggle-row premium-toggle">
+              <span>Avviso se ACR scende sotto una certa soglia</span>
+              <input type="checkbox" />
+            </label>
+            <label className="linkedin-account-field">
+              <span>Soglia ACR</span>
+              <input type="number" inputMode="numeric" placeholder="Es. 20%" />
+            </label>
+          </div>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>Avviso se l'automazione e ferma</span>
+            <input type="checkbox" />
+          </label>
+
+          <p>Le notifiche aiutano a monitorare l'andamento dell'automazione senza controllare manualmente la dashboard.</p>
+        </div>
+      </details>
     </article>
   );
 }

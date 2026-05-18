@@ -1558,6 +1558,12 @@ button {
   padding-top: 2px;
 }
 
+.settings-notification-threshold {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
 .settings-subsection h4 {
   margin: 0;
   color: #f8fafc;
