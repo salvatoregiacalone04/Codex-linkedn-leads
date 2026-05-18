@@ -705,8 +705,7 @@ function MessageTemplateCard({ title, subtitle, placeholder, count }) {
 
 function SettingsPanel() {
   return (
-    <article className="workspace-card">
-      <PanelHeading title="Impostazioni" />
+    <article className="workspace-card settings-workspace">
       <details className="settings-card linkedin-account-card">
         <summary className="settings-card-summary">
           <div>
