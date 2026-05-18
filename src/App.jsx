@@ -217,7 +217,6 @@ function TimePickerPanel({ date, setDate }) {
       <label className="automation-date-row">
         <span className="automation-time-label">Start date</span>
         <span className="date-picker-control">
-          <Calendar size={16} aria-hidden="true" />
           <input
             type="date"
             aria-label="Data di partenza automazione"
