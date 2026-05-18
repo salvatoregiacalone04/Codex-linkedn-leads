@@ -204,9 +204,14 @@ function TimePickerPanel({ date, setDate }) {
             Status: <span>Ready</span>
           </p>
         </div>
-        <span className="time-picker-icon">
-          <Clock size={16} />
-        </span>
+        <div className="automation-icon-group" aria-hidden="true">
+          <span className="time-picker-icon">
+            <Calendar size={16} />
+          </span>
+          <span className="time-picker-icon">
+            <Clock size={16} />
+          </span>
+        </div>
       </header>
 
       <label className="automation-date-row">
