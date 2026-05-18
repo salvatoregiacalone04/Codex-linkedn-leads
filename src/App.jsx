@@ -984,6 +984,58 @@ function SettingsPanel() {
           </div>
         </div>
       </details>
+
+      <details className="settings-card appearance-card">
+        <summary className="settings-card-summary compact">
+          <div>
+            <h3>Aspetto</h3>
+            <p>Personalizza tema, animazioni e preferenze visive della dashboard.</p>
+          </div>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+
+        <div className="settings-card-content">
+          <label className="linkedin-account-field">
+            <span>Tema dashboard</span>
+            <select defaultValue="Scuro">
+              <option>Scuro</option>
+              <option>Chiaro</option>
+            </select>
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>
+              Layout compatto
+              <small>Riduce spaziature e dimensioni delle sezioni.</small>
+            </span>
+            <input type="checkbox" defaultChecked />
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>
+              Effetti animati
+              <small>Attiva o disattiva glow, transizioni e micro-animazioni.</small>
+            </span>
+            <input type="checkbox" defaultChecked />
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>
+              Riduci animazioni
+              <small>Limita le animazioni per una navigazione piu semplice.</small>
+            </span>
+            <input type="checkbox" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Lingua dashboard</span>
+            <select defaultValue="Italiano">
+              <option>Italiano</option>
+              <option>Inglese</option>
+            </select>
+          </label>
+        </div>
+      </details>
     </article>
   );
 }
