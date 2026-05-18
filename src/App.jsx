@@ -841,6 +841,62 @@ function SettingsPanel() {
           </section>
         </div>
       </details>
+
+      <details className="settings-card message-personalization-card">
+        <summary className="settings-card-summary compact">
+          <div>
+            <h3>Messaggi e personalizzazione</h3>
+          </div>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+
+        <div className="settings-card-content">
+          <p>Configura lingua, tono e regole di personalizzazione dei messaggi.</p>
+
+          <label className="linkedin-account-field">
+            <span>Lingua messaggi</span>
+            <select defaultValue="Italiano">
+              <option>Italiano</option>
+              <option>Inglese</option>
+            </select>
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Tono messaggi</span>
+            <select defaultValue="Professionale">
+              <option>Professionale</option>
+              <option>Amichevole</option>
+              <option>Diretto</option>
+            </select>
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>Usa nome del lead</span>
+            <input type="checkbox" defaultChecked />
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>Usa azienda del lead</span>
+            <input type="checkbox" defaultChecked />
+          </label>
+
+          <label className="settings-toggle-row premium-toggle">
+            <span>Usa ruolo del lead</span>
+            <input type="checkbox" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Lunghezza messaggio</span>
+            <select defaultValue="Normale">
+              <option>Breve</option>
+              <option>Normale</option>
+              <option>Dettagliata</option>
+            </select>
+          </label>
+
+          <p>Queste preferenze influenzano il modo in cui i messaggi vengono personalizzati.</p>
+        </div>
+      </details>
     </article>
   );
 }
