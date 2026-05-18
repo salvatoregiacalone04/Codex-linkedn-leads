@@ -707,34 +707,37 @@ function SettingsPanel() {
   return (
     <article className="workspace-card">
       <PanelHeading title="Impostazioni" />
-      <section className="settings-card" aria-label="Account LinkedIn">
-        <header>
+      <details className="settings-card linkedin-account-card">
+        <summary className="settings-card-summary">
           <div>
             <h3>Account LinkedIn</h3>
             <p>Gestisci il profilo LinkedIn usato per inviare richieste e follow-up.</p>
           </div>
-        </header>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
 
-        <div className="linkedin-account-status">
-          <span>Stato account</span>
-          <strong>Non collegato</strong>
+        <div className="linkedin-account-content">
+          <div className="linkedin-account-status">
+            <span>Stato account</span>
+            <strong>Non collegato</strong>
+          </div>
+
+          <label className="linkedin-account-field">
+            <span>Nome profilo LinkedIn</span>
+            <input type="text" placeholder="Es. Toto Rossi" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>URL profilo LinkedIn</span>
+            <input type="url" placeholder="https://www.linkedin.com/in/username" />
+          </label>
+
+          <div className="linkedin-account-actions">
+            <button className="linkedin-connect" type="button">Collega LinkedIn</button>
+            <button className="linkedin-disconnect" type="button">Disconnetti</button>
+          </div>
         </div>
-
-        <label className="linkedin-account-field">
-          <span>Nome profilo LinkedIn</span>
-          <input type="text" placeholder="Es. Toto Rossi" />
-        </label>
-
-        <label className="linkedin-account-field">
-          <span>URL profilo LinkedIn</span>
-          <input type="url" placeholder="https://www.linkedin.com/in/username" />
-        </label>
-
-        <div className="linkedin-account-actions">
-          <button className="linkedin-connect" type="button">Collega LinkedIn</button>
-          <button className="linkedin-disconnect" type="button">Disconnetti</button>
-        </div>
-      </section>
+      </details>
     </article>
   );
 }

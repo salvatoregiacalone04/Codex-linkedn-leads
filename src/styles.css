@@ -1360,18 +1360,44 @@ button {
 
 .settings-card {
   display: grid;
-  gap: 12px;
   min-width: 0;
-  padding: 14px;
   border: 1px solid rgba(139, 92, 246, 0.36);
   border-radius: 8px;
   background: linear-gradient(135deg, rgba(32, 26, 45, 0.96), rgba(20, 17, 25, 0.96));
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
+  overflow: hidden;
 }
 
-.settings-card header {
+.settings-card-summary {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.settings-card-summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-card-summary div {
   display: grid;
   gap: 6px;
+  min-width: 0;
+}
+
+.settings-card-summary svg {
+  flex: 0 0 auto;
+  color: #c4b5fd;
+  transition: transform 180ms ease;
+}
+
+.settings-card[open] .settings-card-summary svg {
+  transform: rotate(180deg);
 }
 
 .settings-card h3 {
@@ -1388,6 +1414,17 @@ button {
   font-size: 13px;
   font-weight: 650;
   line-height: 1.35;
+}
+
+.linkedin-account-content {
+  display: grid;
+  gap: 12px;
+  padding: 0 14px 14px;
+  border-top: 1px solid rgba(69, 58, 88, 0.58);
+}
+
+.settings-card[open] .linkedin-account-content {
+  padding-top: 14px;
 }
 
 .linkedin-account-status {
