@@ -23,7 +23,7 @@ const tabs = [
   { id: 'search', label: 'Attività', icon: ClipboardList },
   { id: 'pipeline', label: 'Pipeline', icon: LayoutList },
   { id: 'messages', label: 'Msg', icon: MessageSquareText },
-  { id: 'settings', label: 'Altro', icon: Settings }
+  { id: 'settings', label: 'Impostazioni', icon: Settings }
 ];
 
 const stages = [
