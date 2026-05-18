@@ -1361,6 +1361,7 @@ button {
 .settings-card {
   display: grid;
   min-width: 0;
+  margin-top: 12px;
   border: 1px solid rgba(139, 92, 246, 0.36);
   border-radius: 8px;
   background: linear-gradient(135deg, rgba(32, 26, 45, 0.96), rgba(20, 17, 25, 0.96));
@@ -1378,6 +1379,10 @@ button {
   cursor: pointer;
   list-style: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+.settings-card-summary.compact {
+  min-height: 62px;
 }
 
 .settings-card-summary::-webkit-details-marker {
@@ -1416,14 +1421,16 @@ button {
   line-height: 1.35;
 }
 
-.linkedin-account-content {
+.linkedin-account-content,
+.settings-card-content {
   display: grid;
   gap: 12px;
   padding: 0 14px 14px;
   border-top: 1px solid rgba(69, 58, 88, 0.58);
 }
 
-.settings-card[open] .linkedin-account-content {
+.settings-card[open] .linkedin-account-content,
+.settings-card[open] .settings-card-content {
   padding-top: 14px;
 }
 
@@ -1467,7 +1474,8 @@ button {
   min-width: 0;
 }
 
-.linkedin-account-field input {
+.linkedin-account-field input,
+.linkedin-account-field select {
   width: 100%;
   min-width: 0;
   height: 44px;
@@ -1482,14 +1490,65 @@ button {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
 }
 
+.linkedin-account-field select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #a7a3b7 50%),
+    linear-gradient(135deg, #a7a3b7 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 19px,
+    calc(100% - 12px) 19px;
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
+}
+
 .linkedin-account-field input::placeholder {
   color: #716a80;
 }
 
-.linkedin-account-field input:focus {
+.linkedin-account-field input:focus,
+.linkedin-account-field select:focus {
   border-color: #a78bfa;
   background: #241b32;
   box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.16), 0 12px 26px rgba(0, 0, 0, 0.24);
+}
+
+.linkedin-account-field small {
+  color: #a7a3b7;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.settings-toggle-row {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(69, 58, 88, 0.78);
+  border-radius: 8px;
+  background: rgba(23, 19, 31, 0.72);
+}
+
+.settings-toggle-row span {
+  min-width: 0;
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.settings-toggle-row input {
+  width: 44px;
+  height: 24px;
+  flex: 0 0 auto;
+  accent-color: #7c3aed;
 }
 
 .linkedin-account-actions {

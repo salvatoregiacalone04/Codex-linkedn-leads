@@ -738,6 +738,56 @@ function SettingsPanel() {
           </div>
         </div>
       </details>
+
+      <details className="settings-card outreach-preferences-card">
+        <summary className="settings-card-summary compact">
+          <div>
+            <h3>Preferenze outreach</h3>
+          </div>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+
+        <div className="settings-card-content">
+          <p>Configura i limiti e il comportamento dell'automazione durante l'outreach.</p>
+
+          <label className="linkedin-account-field">
+            <span>Richieste massime al giorno</span>
+            <input type="number" inputMode="numeric" placeholder="Es. 30" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Messaggi massimi al giorno</span>
+            <input type="number" inputMode="numeric" placeholder="Es. 50" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Ritardo medio tra le azioni</span>
+            <select defaultValue="1-3 min">
+              <option>30-60 sec</option>
+              <option>1-3 min</option>
+              <option>3-5 min</option>
+              <option>5-10 min</option>
+            </select>
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Modalita automazione</span>
+            <select defaultValue="Prudente">
+              <option>Prudente</option>
+              <option>Standard</option>
+              <option>Spinta</option>
+            </select>
+            <small>
+              La modalita prudente riduce il numero di azioni giornaliere per mantenere un comportamento piu naturale.
+            </small>
+          </label>
+
+          <label className="settings-toggle-row">
+            <span>Pausa automatica se un lead risponde</span>
+            <input type="checkbox" defaultChecked />
+          </label>
+        </div>
+      </details>
     </article>
   );
 }
