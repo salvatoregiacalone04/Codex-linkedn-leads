@@ -694,7 +694,7 @@ function MessageTemplateCard({ title, subtitle, placeholder, count }) {
           <p>{subtitle}</p>
         </div>
       </header>
-      <textarea placeholder={placeholder} rows={5} />
+      <textarea placeholder={placeholder} rows={4} />
       <div className="message-template-meta">
         <span>{count}</span>
         <small>Usa {'{{nome}}'} per personalizzare il messaggio</small>
