@@ -3,6 +3,7 @@ import {
   Activity,
   Bell,
   BarChart3,
+  Calendar,
   ChevronDown,
   ClipboardList,
   Clock,
@@ -173,6 +174,23 @@ function setDateByType(date, value, type) {
   }
 }
 
+function getDateInputValue(date) {
+  const year = date.getFullYear();
+  const month = getValidMinuteOrSecond(String(date.getMonth() + 1));
+  const day = getValidMinuteOrSecond(String(date.getDate()));
+
+  return `${year}-${month}-${day}`;
+}
+
+function setDateByCalendarValue(date, value) {
+  if (!value) return date;
+
+  const [year, month, day] = value.split('-').map(Number);
+  const nextDate = new Date(date);
+  nextDate.setFullYear(year, month - 1, day);
+  return nextDate;
+}
+
 function TimePickerPanel({ date, setDate }) {
   const hourRef = React.useRef(null);
   const minuteRef = React.useRef(null);
@@ -190,6 +208,19 @@ function TimePickerPanel({ date, setDate }) {
           <Clock size={16} />
         </span>
       </header>
+
+      <label className="automation-date-row">
+        <span className="automation-time-label">Start date</span>
+        <span className="date-picker-control">
+          <Calendar size={16} aria-hidden="true" />
+          <input
+            type="date"
+            aria-label="Data di partenza automazione"
+            value={getDateInputValue(date)}
+            onChange={(event) => setDate(setDateByCalendarValue(date, event.target.value))}
+          />
+        </span>
+      </label>
 
       <div className="automation-time-row">
         <span className="automation-time-label">Start outreach at</span>
