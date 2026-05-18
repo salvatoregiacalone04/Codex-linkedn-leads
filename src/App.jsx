@@ -941,6 +941,50 @@ function SettingsPanel() {
           <p>Le notifiche aiutano a monitorare l'andamento dell'automazione senza controllare manualmente la dashboard.</p>
         </div>
       </details>
+
+      <details className="settings-card data-reset-card">
+        <summary className="settings-card-summary compact">
+          <div>
+            <h3>Dati e reset</h3>
+            <p>Gestisci esportazioni, cronologia e dati demo della dashboard.</p>
+          </div>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+
+        <div className="settings-card-content">
+          <div className="settings-action-row">
+            <div>
+              <strong>Esporta lead</strong>
+              <p>Esporta lead in un file Excel/CSV</p>
+            </div>
+            <button className="settings-action-button primary" type="button">Esporta lead</button>
+          </div>
+
+          <div className="settings-action-row">
+            <div>
+              <strong>Esporta attivita</strong>
+              <p>Scarica lo storico delle attivita dell'automazione.</p>
+            </div>
+            <button className="settings-action-button primary" type="button">Esporta attivita</button>
+          </div>
+
+          <div className="settings-action-row">
+            <div>
+              <strong>Cancella cronologia automazione</strong>
+              <p>Rimuove lo storico delle azioni eseguite dall'automazione.</p>
+            </div>
+            <button className="settings-action-button danger-soft" type="button">Cancella cronologia</button>
+          </div>
+
+          <div className="settings-action-row warning">
+            <div>
+              <strong>Reset dati demo</strong>
+              <p>Questa azione serve solo per ripristinare i dati dimostrativi della dashboard.</p>
+            </div>
+            <button className="settings-action-button danger" type="button">Reset dati demo</button>
+          </div>
+        </div>
+      </details>
     </article>
   );
 }

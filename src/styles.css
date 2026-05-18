@@ -1613,6 +1613,65 @@ button {
   box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.18);
 }
 
+.settings-action-row {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(69, 58, 88, 0.78);
+  border-radius: 8px;
+  background: rgba(23, 19, 31, 0.72);
+}
+
+.settings-action-row.warning {
+  border-color: rgba(244, 63, 94, 0.32);
+  background: rgba(37, 18, 27, 0.64);
+}
+
+.settings-action-row strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.settings-action-row p {
+  margin: 5px 0 0;
+  color: #a7a3b7;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.settings-action-button {
+  min-height: 42px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.settings-action-button.primary {
+  border: 0;
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed, #dc2626);
+  box-shadow: 0 14px 26px rgba(124, 58, 237, 0.18);
+}
+
+.settings-action-button.danger-soft {
+  border: 1px solid rgba(244, 63, 94, 0.38);
+  color: #fecdd3;
+  background: rgba(127, 29, 29, 0.22);
+}
+
+.settings-action-button.danger {
+  border: 1px solid rgba(244, 63, 94, 0.48);
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(190, 18, 60, 0.88), rgba(124, 58, 237, 0.68));
+  box-shadow: 0 12px 24px rgba(190, 18, 60, 0.14);
+}
+
 .linkedin-account-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
