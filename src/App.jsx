@@ -934,7 +934,7 @@ function SettingsPanel() {
           </div>
 
           <label className="settings-toggle-row premium-toggle">
-            <span>Avviso se l'automazione e ferma</span>
+            <span>Avviso se l'automazione è ferma</span>
             <input type="checkbox" />
           </label>
 
