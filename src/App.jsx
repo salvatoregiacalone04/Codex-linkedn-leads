@@ -743,13 +743,12 @@ function SettingsPanel() {
         <summary className="settings-card-summary compact">
           <div>
             <h3>Preferenze outreach</h3>
+            <p>Configura i limiti e il comportamento dell'automazione durante l'outreach.</p>
           </div>
           <ChevronDown size={20} aria-hidden="true" />
         </summary>
 
         <div className="settings-card-content">
-          <p>Configura i limiti e il comportamento dell'automazione durante l'outreach.</p>
-
           <label className="linkedin-account-field">
             <span>Richieste massime al giorno</span>
             <input type="number" inputMode="numeric" placeholder="Es. 30" />
