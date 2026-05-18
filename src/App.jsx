@@ -4,6 +4,7 @@ import {
   Bell,
   BarChart3,
   Calendar,
+  Check,
   ChevronDown,
   ClipboardList,
   Clock,
@@ -41,6 +42,18 @@ const acrTrendData = [
   { week: 'S3', value: 21 },
   { week: 'S4', value: 32 }
 ];
+
+const businessDays = [
+  { id: 'monday', label: 'Monday', shortLabel: 'Mon' },
+  { id: 'tuesday', label: 'Tuesday', shortLabel: 'Tue' },
+  { id: 'wednesday', label: 'Wednesday', shortLabel: 'Wed' },
+  { id: 'thursday', label: 'Thursday', shortLabel: 'Thu' },
+  { id: 'friday', label: 'Friday', shortLabel: 'Fri' },
+  { id: 'saturday', label: 'Saturday', shortLabel: 'Sat' },
+  { id: 'sunday', label: 'Sunday', shortLabel: 'Sun' }
+];
+
+const defaultBusinessDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -191,9 +204,30 @@ function setDateByCalendarValue(date, value) {
   return nextDate;
 }
 
+function getBusinessDaysSummary(selectedDays) {
+  if (selectedDays.length === 0) return 'No days';
+  if (selectedDays.length === businessDays.length) return 'Every day';
+  if (defaultBusinessDays.every((day) => selectedDays.includes(day)) && selectedDays.length === 5) return 'Mon-Fri';
+
+  return businessDays
+    .filter((day) => selectedDays.includes(day.id))
+    .map((day) => day.shortLabel)
+    .join(', ');
+}
+
 function TimePickerPanel({ date, setDate }) {
   const hourRef = React.useRef(null);
   const minuteRef = React.useRef(null);
+  const [selectedBusinessDays, setSelectedBusinessDays] = useState(defaultBusinessDays);
+  const [isBusinessDaysOpen, setIsBusinessDaysOpen] = useState(false);
+
+  const toggleBusinessDay = (dayId) => {
+    setSelectedBusinessDays((currentDays) => (
+      currentDays.includes(dayId)
+        ? currentDays.filter((currentDay) => currentDay !== dayId)
+        : [...currentDays, dayId]
+    ));
+  };
 
   return (
     <section className="time-picker-panel" aria-label="Selettore orario">
@@ -252,6 +286,42 @@ function TimePickerPanel({ date, setDate }) {
             onLeftFocus={() => hourRef.current?.focus()}
           />
         </div>
+      </div>
+
+      <div className="business-days-field">
+        <span className="business-days-label">Business days</span>
+        <button
+          className="business-days-trigger"
+          type="button"
+          aria-expanded={isBusinessDaysOpen}
+          aria-controls="business-days-menu"
+          onClick={() => setIsBusinessDaysOpen((isOpen) => !isOpen)}
+        >
+          <span>{getBusinessDaysSummary(selectedBusinessDays)}</span>
+          <ChevronDown size={16} aria-hidden="true" />
+        </button>
+
+        {isBusinessDaysOpen && (
+          <div className="business-days-menu" id="business-days-menu" role="listbox" aria-multiselectable="true">
+            {businessDays.map((day) => {
+              const isSelected = selectedBusinessDays.includes(day.id);
+
+              return (
+                <button
+                  className={isSelected ? 'selected' : ''}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => toggleBusinessDay(day.id)}
+                  key={day.id}
+                >
+                  <span>{day.label}</span>
+                  {isSelected && <Check size={15} aria-hidden="true" />}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <button className="automation-start" type="button">
