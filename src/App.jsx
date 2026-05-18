@@ -787,6 +787,60 @@ function SettingsPanel() {
           </label>
         </div>
       </details>
+
+      <details className="settings-card icp-targeting-card">
+        <summary className="settings-card-summary compact">
+          <div>
+            <h3>ICP e targeting</h3>
+            <p>Configura le preferenze globali per filtrare i lead durante l'outreach.</p>
+          </div>
+          <ChevronDown size={20} aria-hidden="true" />
+        </summary>
+
+        <div className="settings-card-content">
+          <label className="linkedin-account-field">
+            <span>Settore target</span>
+            <input type="text" placeholder="Es. SaaS, consulenza, e-commerce" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Ruolo target</span>
+            <input type="text" placeholder="Es. Founder, CEO, Marketing Manager" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Area geografica</span>
+            <input type="text" placeholder="Es. Italia, Europa, Stati Uniti" />
+          </label>
+
+          <label className="linkedin-account-field">
+            <span>Dimensione azienda</span>
+            <select defaultValue="Qualsiasi">
+              <option>Qualsiasi</option>
+              <option>1-10 dipendenti</option>
+              <option>11-50 dipendenti</option>
+              <option>51-200 dipendenti</option>
+              <option>201+ dipendenti</option>
+            </select>
+          </label>
+
+          <section className="settings-subsection" aria-label="Esclusioni">
+            <h4>Esclusioni</h4>
+            <label className="settings-toggle-row premium-toggle">
+              <span>Escludi profili gia contattati</span>
+              <input type="checkbox" defaultChecked />
+            </label>
+            <label className="settings-toggle-row premium-toggle">
+              <span>Escludi lead senza foto profilo</span>
+              <input type="checkbox" />
+            </label>
+            <label className="settings-toggle-row premium-toggle">
+              <span>Escludi profili senza descrizione chiara</span>
+              <input type="checkbox" />
+            </label>
+          </section>
+        </div>
+      </details>
     </article>
   );
 }

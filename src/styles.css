@@ -1551,6 +1551,62 @@ button {
   accent-color: #7c3aed;
 }
 
+.settings-subsection {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.settings-subsection h4 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 15px;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.premium-toggle input {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  border: 1px solid rgba(69, 58, 88, 0.9);
+  border-radius: 999px;
+  appearance: none;
+  background: #17131f;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.premium-toggle input::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  background: #a7a3b7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.premium-toggle input:checked {
+  border-color: rgba(196, 181, 253, 0.58);
+  background: linear-gradient(135deg, #7c3aed, #db2777);
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.22);
+}
+
+.premium-toggle input:checked::before {
+  background: #ffffff;
+  transform: translateX(20px);
+}
+
+.premium-toggle input:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.18);
+}
+
 .linkedin-account-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
