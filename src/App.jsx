@@ -217,12 +217,15 @@ function TimePickerPanel({ date, setDate }) {
       <label className="automation-date-row">
         <span className="automation-time-label">Start date</span>
         <span className="date-picker-control">
-          <input
-            type="date"
-            aria-label="Data di partenza automazione"
-            value={getDateInputValue(date)}
-            onChange={(event) => setDate(setDateByCalendarValue(date, event.target.value))}
-          />
+          <span className="date-picker-trigger">
+            <span className="date-picker-value">{getDateInputValue(date)}</span>
+            <input
+              type="date"
+              aria-label="Data di partenza automazione"
+              value={getDateInputValue(date)}
+              onChange={(event) => setDate(setDateByCalendarValue(date, event.target.value))}
+            />
+          </span>
         </span>
       </label>
 

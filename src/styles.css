@@ -278,28 +278,49 @@ button {
   min-width: 0;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   flex: 0 0 121px;
 }
 
-.date-picker-control input {
+.date-picker-trigger {
+  position: relative;
   min-width: 0;
-  width: 112px;
+  width: 121px;
   height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #453a58;
   border-radius: 8px;
-  outline: 0;
-  padding: 0 4px;
-  color: #f8fafc;
-  color-scheme: dark;
   background: linear-gradient(180deg, #1d1727, #14101b);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
+  animation: scheduler-input-glow 3.6s ease-in-out infinite;
+}
+
+.date-picker-value {
+  width: 100%;
+  color: #f8fafc;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 12px;
   font-weight: 800;
+  line-height: 1;
   text-align: center;
-  line-height: 38px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
-  animation: scheduler-input-glow 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.date-picker-control input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  opacity: 0;
+  color: transparent;
+  color-scheme: dark;
+  background: transparent;
+  cursor: pointer;
 }
 
 .date-picker-control input::-webkit-calendar-picker-indicator,
@@ -314,7 +335,7 @@ button {
   text-align: center;
 }
 
-.date-picker-control input:focus {
+.date-picker-trigger:focus-within {
   border-color: #a78bfa;
   background: #241b32;
   animation: none;
@@ -1336,8 +1357,11 @@ button {
     flex-basis: 114px;
   }
 
-  .date-picker-control input {
-    width: 106px;
+  .date-picker-trigger {
+    width: 114px;
+  }
+
+  .date-picker-value {
     font-size: 12px;
   }
 
