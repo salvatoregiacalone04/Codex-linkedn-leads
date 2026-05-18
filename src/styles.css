@@ -1390,121 +1390,98 @@ button {
   line-height: 1.35;
 }
 
-.settings-select-field {
-  min-height: 76px;
+.linkedin-account-status {
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   min-width: 0;
-  padding: 10px;
+  padding: 10px 12px;
   border: 1px solid rgba(69, 58, 88, 0.78);
   border-radius: 8px;
   background: rgba(23, 19, 31, 0.72);
 }
 
-.settings-select-field > span {
+.linkedin-account-status span,
+.linkedin-account-field span {
   min-width: 0;
   color: #f8fafc;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   line-height: 1.2;
 }
 
-.settings-select-trigger {
-  min-width: 0;
-  width: 150px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 0 8px;
-  border: 1px solid #453a58;
-  border-radius: 8px;
-  color: #f8fafc;
-  background: linear-gradient(180deg, #1d1727, #14101b);
+.linkedin-account-status strong {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  border-radius: 999px;
+  color: #fecdd3;
+  background: rgba(127, 29, 29, 0.38);
   font-size: 12px;
   font-weight: 850;
-  text-align: center;
+  line-height: 1;
+}
+
+.linkedin-account-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.linkedin-account-field input {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #453a58;
+  border-radius: 8px;
+  outline: 0;
+  color: #f8fafc;
+  background: linear-gradient(180deg, #1d1727, #14101b);
+  font-size: 14px;
+  font-weight: 700;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
 }
 
-.settings-select-trigger span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.linkedin-account-field input::placeholder {
+  color: #716a80;
 }
 
-.settings-select-trigger svg {
-  flex: 0 0 auto;
-  color: #c4b5fd;
-}
-
-.settings-select-trigger:focus-visible {
-  outline: 0;
+.linkedin-account-field input:focus {
   border-color: #a78bfa;
   background: #241b32;
   box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.16), 0 12px 26px rgba(0, 0, 0, 0.24);
 }
 
-.settings-select-menu {
+.linkedin-account-actions {
   display: grid;
-  gap: 8px;
-  min-width: 0;
-  width: 100%;
-  padding: 10px;
-  border: 1px solid rgba(139, 92, 246, 0.38);
-  border-radius: 8px;
-  background: rgba(13, 10, 19, 0.98);
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34), 0 0 24px rgba(124, 58, 237, 0.12);
-}
-
-.settings-select-menu button {
-  min-width: 0;
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
-  padding: 8px 12px;
-  border: 1px solid rgba(69, 58, 88, 0.82);
-  border-radius: 8px;
-  color: #a7a3b7;
-  background: rgba(23, 19, 31, 0.84);
-  text-align: left;
-}
-
-.settings-select-menu button span {
-  display: grid;
-  gap: 3px;
   min-width: 0;
 }
 
-.settings-select-menu button strong {
-  color: inherit;
-  font-size: 14px;
+.linkedin-connect,
+.linkedin-disconnect {
+  min-width: 0;
+  min-height: 44px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 850;
-  line-height: 1.15;
 }
 
-.settings-select-menu button small {
-  color: rgba(226, 232, 240, 0.62);
-  font-size: 11px;
-  font-weight: 650;
-  line-height: 1.2;
-}
-
-.settings-select-menu button.selected {
-  border-color: rgba(196, 181, 253, 0.54);
+.linkedin-connect {
+  border: 0;
   color: #ffffff;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.92), rgba(219, 39, 119, 0.78));
-  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.18);
+  background: linear-gradient(135deg, #7c3aed, #dc2626);
+  box-shadow: 0 14px 26px rgba(124, 58, 237, 0.18);
 }
 
-.settings-select-menu button svg {
-  flex: 0 0 auto;
+.linkedin-disconnect {
+  border: 1px solid rgba(69, 58, 88, 0.9);
+  color: #e2e8f0;
+  background: rgba(23, 19, 31, 0.86);
 }
 
 .bottom-nav {
@@ -1618,18 +1595,8 @@ button {
     font-size: 12px;
   }
 
-  .settings-select-field {
-    gap: 8px;
-    padding-inline: 9px;
-  }
-
-  .settings-select-field > span {
-    font-size: 13px;
-  }
-
-  .settings-select-trigger {
-    width: 132px;
-    font-size: 11px;
+  .linkedin-account-actions {
+    grid-template-columns: 1fr;
   }
 
   .time-picker-field input {

@@ -55,16 +55,6 @@ const businessDays = [
 
 const defaultBusinessDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
-const linkedinAccountFields = [
-  { id: 'status', label: 'Stato account', detail: 'Non collegato / Collegato' },
-  { id: 'profileName', label: 'Nome profilo LinkedIn', detail: 'Profilo usato dall automazione' },
-  { id: 'profileUrl', label: 'URL profilo LinkedIn', detail: 'Link pubblico del profilo' },
-  { id: 'connect', label: 'Collega LinkedIn', detail: 'Pulsante principale' },
-  { id: 'disconnect', label: 'Disconnetti', detail: 'Pulsante secondario' }
-];
-
-const defaultLinkedinAccountFields = ['status', 'profileName', 'profileUrl'];
-
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedTime, setSelectedTime] = useState(() => new Date(new Date().setHours(9, 0, 0, 0)));
@@ -714,21 +704,6 @@ function MessageTemplateCard({ title, subtitle, placeholder, count }) {
 }
 
 function SettingsPanel() {
-  const [selectedAccountFields, setSelectedAccountFields] = useState(defaultLinkedinAccountFields);
-  const [isAccountFieldsOpen, setIsAccountFieldsOpen] = useState(false);
-
-  const toggleAccountField = (fieldId) => {
-    setSelectedAccountFields((currentFields) => (
-      currentFields.includes(fieldId)
-        ? currentFields.filter((currentField) => currentField !== fieldId)
-        : [...currentFields, fieldId]
-    ));
-  };
-
-  const accountFieldsSummary = selectedAccountFields.length === 0
-    ? 'Nessun campo'
-    : `${selectedAccountFields.length} variabili selezionate`;
-
   return (
     <article className="workspace-card">
       <PanelHeading title="Impostazioni" />
@@ -740,49 +715,25 @@ function SettingsPanel() {
           </div>
         </header>
 
-        <div className="settings-select-field">
-          <span>Variabili account</span>
-          <button
-            className="settings-select-trigger"
-            type="button"
-            aria-expanded={isAccountFieldsOpen}
-            aria-controls="linkedin-account-fields-menu"
-            onClick={() => setIsAccountFieldsOpen((isOpen) => !isOpen)}
-          >
-            <span>{accountFieldsSummary}</span>
-            <ChevronDown size={16} aria-hidden="true" />
-          </button>
+        <div className="linkedin-account-status">
+          <span>Stato account</span>
+          <strong>Non collegato</strong>
         </div>
 
-        {isAccountFieldsOpen && (
-          <div
-            className="settings-select-menu"
-            id="linkedin-account-fields-menu"
-            role="listbox"
-            aria-multiselectable="true"
-          >
-            {linkedinAccountFields.map((field) => {
-              const isSelected = selectedAccountFields.includes(field.id);
+        <label className="linkedin-account-field">
+          <span>Nome profilo LinkedIn</span>
+          <input type="text" placeholder="Es. Toto Rossi" />
+        </label>
 
-              return (
-                <button
-                  className={isSelected ? 'selected' : ''}
-                  type="button"
-                  role="option"
-                  aria-selected={isSelected}
-                  onClick={() => toggleAccountField(field.id)}
-                  key={field.id}
-                >
-                  <span>
-                    <strong>{field.label}</strong>
-                    <small>{field.detail}</small>
-                  </span>
-                  {isSelected && <Check size={15} aria-hidden="true" />}
-                </button>
-              );
-            })}
-          </div>
-        )}
+        <label className="linkedin-account-field">
+          <span>URL profilo LinkedIn</span>
+          <input type="url" placeholder="https://www.linkedin.com/in/username" />
+        </label>
+
+        <div className="linkedin-account-actions">
+          <button className="linkedin-connect" type="button">Collega LinkedIn</button>
+          <button className="linkedin-disconnect" type="button">Disconnetti</button>
+        </div>
       </section>
     </article>
   );
