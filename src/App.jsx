@@ -846,13 +846,12 @@ function SettingsPanel() {
         <summary className="settings-card-summary compact">
           <div>
             <h3>Messaggi e personalizzazione</h3>
+            <p>Configura lingua, tono e regole di personalizzazione dei messaggi.</p>
           </div>
           <ChevronDown size={20} aria-hidden="true" />
         </summary>
 
         <div className="settings-card-content">
-          <p>Configura lingua, tono e regole di personalizzazione dei messaggi.</p>
-
           <label className="linkedin-account-field">
             <span>Lingua messaggi</span>
             <select defaultValue="Italiano">
