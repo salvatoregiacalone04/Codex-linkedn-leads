@@ -16,7 +16,6 @@ import {
   Settings,
   SlidersHorizontal,
 } from 'lucide-react';
-import saxophoneAesthetic from './assets/saxophone-aesthetic.png';
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home },
@@ -339,10 +338,6 @@ function HomePanel({ date, setDate }) {
         </button>
       </form>
       </details>
-
-      <figure className="saxophone-card" aria-label="Sax estetico">
-        <img src={saxophoneAesthetic} alt="Sax dorato estetico con luci viola" />
-      </figure>
 
     </div>
   );
