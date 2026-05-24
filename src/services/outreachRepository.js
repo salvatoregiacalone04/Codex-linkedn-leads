@@ -157,7 +157,10 @@ export async function updateAutomationSettings(id, settings) {
       start_date: settings.startDate,
       start_time: settings.startTime,
       business_days: settings.businessDays,
+      linkedin_profile_name: settings.linkedinProfileName,
       linkedin_profile_url: settings.linkedinProfileUrl,
+      linkedin_connection_status: settings.linkedinConnectionStatus,
+      linkedin_connected_at: settings.linkedinConnectedAt,
       weekly_connection_limit: settings.weeklyConnectionLimit,
       enabled: settings.enabled
     })
@@ -241,7 +244,10 @@ function mapAutomationSettings(settings) {
     startDate: settings.start_date,
     startTime: settings.start_time?.slice(0, 5) || '09:00',
     businessDays: settings.business_days || [],
+    linkedinProfileName: settings.linkedin_profile_name || '',
     linkedinProfileUrl: settings.linkedin_profile_url || '',
+    linkedinConnectionStatus: settings.linkedin_connection_status || 'disconnected',
+    linkedinConnectedAt: settings.linkedin_connected_at || null,
     weeklyConnectionLimit: settings.weekly_connection_limit,
     enabled: settings.enabled
   };

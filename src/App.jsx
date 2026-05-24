@@ -162,6 +162,20 @@ export function App() {
     }
   };
 
+  const saveLinkedInAccount = async (account) => {
+    const nextSettings = {
+      ...getFallbackAutomationSettings(automationSettings, selectedTime, selectedBusinessDays),
+      linkedinProfileName: account.linkedinProfileName,
+      linkedinProfileUrl: account.linkedinProfileUrl,
+      linkedinConnectionStatus: account.linkedinConnectionStatus,
+      linkedinConnectedAt: account.linkedinConnectedAt
+    };
+
+    const savedSettings = await updateAutomationSettings(nextSettings.id, nextSettings);
+    setAutomationSettings(savedSettings);
+    return savedSettings;
+  };
+
   return (
     <main className="mobile-shell" aria-label="Dashboard mobile LinkedIn leads">
       <header className="topbar">
@@ -197,7 +211,12 @@ export function App() {
         {activeTab === 'search' && <SearchPanel />}
         {activeTab === 'pipeline' && <PipelinePanel leads={dashboardData?.leads || []} />}
         {activeTab === 'messages' && <MessagesPanel messages={dashboardData?.messages || []} />}
-        {activeTab === 'settings' && <SettingsPanel />}
+        {activeTab === 'settings' && (
+          <SettingsPanel
+            automationSettings={getFallbackAutomationSettings(automationSettings, selectedTime, selectedBusinessDays)}
+            saveLinkedInAccount={saveLinkedInAccount}
+          />
+        )}
       </section>
 
       <nav className="bottom-nav" aria-label="Navigazione principale">
@@ -245,7 +264,10 @@ function getFallbackAutomationSettings(settings, date, selectedDays) {
     startDate: getDateInputValue(date),
     startTime: getTimeInputValue(date),
     businessDays: selectedDays,
+    linkedinProfileName: settings?.linkedinProfileName || '',
     linkedinProfileUrl: settings?.linkedinProfileUrl || '',
+    linkedinConnectionStatus: settings?.linkedinConnectionStatus || 'disconnected',
+    linkedinConnectedAt: settings?.linkedinConnectedAt || null,
     weeklyConnectionLimit: settings?.weeklyConnectionLimit || 250,
     enabled: settings?.enabled || false
   };
@@ -1005,7 +1027,80 @@ function MessageTemplateCard({ title, subtitle, placeholder, value, count, onCha
   );
 }
 
-function SettingsPanel() {
+function SettingsPanel({ automationSettings, saveLinkedInAccount }) {
+  const [linkedinAccount, setLinkedinAccount] = useState({
+    linkedinProfileName: automationSettings.linkedinProfileName,
+    linkedinProfileUrl: automationSettings.linkedinProfileUrl,
+    linkedinConnectionStatus: automationSettings.linkedinConnectionStatus,
+    linkedinConnectedAt: automationSettings.linkedinConnectedAt
+  });
+  const [linkedinSaveState, setLinkedinSaveState] = useState('');
+
+  useEffect(() => {
+    setLinkedinAccount({
+      linkedinProfileName: automationSettings.linkedinProfileName,
+      linkedinProfileUrl: automationSettings.linkedinProfileUrl,
+      linkedinConnectionStatus: automationSettings.linkedinConnectionStatus,
+      linkedinConnectedAt: automationSettings.linkedinConnectedAt
+    });
+  }, [automationSettings]);
+
+  const updateLinkedInField = (field, value) => {
+    setLinkedinAccount((currentAccount) => ({
+      ...currentAccount,
+      [field]: value
+    }));
+  };
+
+  const connectLinkedIn = async () => {
+    if (!linkedinAccount.linkedinProfileName.trim() || !linkedinAccount.linkedinProfileUrl.trim()) {
+      setLinkedinSaveState('Inserisci nome profilo e URL LinkedIn.');
+      return;
+    }
+
+    setLinkedinSaveState('Collegamento...');
+
+    try {
+      const savedSettings = await saveLinkedInAccount({
+        ...linkedinAccount,
+        linkedinConnectionStatus: 'connected',
+        linkedinConnectedAt: new Date().toISOString()
+      });
+      setLinkedinAccount({
+        linkedinProfileName: savedSettings.linkedinProfileName,
+        linkedinProfileUrl: savedSettings.linkedinProfileUrl,
+        linkedinConnectionStatus: savedSettings.linkedinConnectionStatus,
+        linkedinConnectedAt: savedSettings.linkedinConnectedAt
+      });
+      setLinkedinSaveState('Account LinkedIn collegato');
+    } catch (error) {
+      setLinkedinSaveState(`Errore collegamento: ${error.message}`);
+    }
+  };
+
+  const disconnectLinkedIn = async () => {
+    setLinkedinSaveState('Disconnessione...');
+
+    try {
+      const savedSettings = await saveLinkedInAccount({
+        ...linkedinAccount,
+        linkedinConnectionStatus: 'disconnected',
+        linkedinConnectedAt: null
+      });
+      setLinkedinAccount({
+        linkedinProfileName: savedSettings.linkedinProfileName,
+        linkedinProfileUrl: savedSettings.linkedinProfileUrl,
+        linkedinConnectionStatus: savedSettings.linkedinConnectionStatus,
+        linkedinConnectedAt: savedSettings.linkedinConnectedAt
+      });
+      setLinkedinSaveState('Account LinkedIn disconnesso');
+    } catch (error) {
+      setLinkedinSaveState(`Errore disconnessione: ${error.message}`);
+    }
+  };
+
+  const isLinkedInConnected = linkedinAccount.linkedinConnectionStatus === 'connected';
+
   return (
     <article className="workspace-card settings-workspace">
       <details className="settings-card linkedin-account-card">
@@ -1020,23 +1115,34 @@ function SettingsPanel() {
         <div className="linkedin-account-content">
           <div className="linkedin-account-status">
             <span>Stato account</span>
-            <strong>Non collegato</strong>
+            <strong>{isLinkedInConnected ? 'Collegato' : 'Non collegato'}</strong>
           </div>
 
           <label className="linkedin-account-field">
             <span>Nome profilo LinkedIn</span>
-            <input type="text" placeholder="Es. Toto Rossi" />
+            <input
+              type="text"
+              placeholder="Es. Toto Rossi"
+              value={linkedinAccount.linkedinProfileName}
+              onChange={(event) => updateLinkedInField('linkedinProfileName', event.target.value)}
+            />
           </label>
 
           <label className="linkedin-account-field">
             <span>URL profilo LinkedIn</span>
-            <input type="url" placeholder="https://www.linkedin.com/in/username" />
+            <input
+              type="url"
+              placeholder="https://www.linkedin.com/in/username"
+              value={linkedinAccount.linkedinProfileUrl}
+              onChange={(event) => updateLinkedInField('linkedinProfileUrl', event.target.value)}
+            />
           </label>
 
           <div className="linkedin-account-actions">
-            <button className="linkedin-connect" type="button">Collega LinkedIn</button>
-            <button className="linkedin-disconnect" type="button">Disconnetti</button>
+            <button className="linkedin-connect" type="button" onClick={connectLinkedIn}>Collega LinkedIn</button>
+            <button className="linkedin-disconnect" type="button" onClick={disconnectLinkedIn}>Disconnetti</button>
           </div>
+          {linkedinSaveState && <p className="data-status">{linkedinSaveState}</p>}
         </div>
       </details>
 

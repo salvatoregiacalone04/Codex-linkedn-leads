@@ -146,7 +146,10 @@ export const automationSettings = {
   startDate: new Date().toISOString().slice(0, 10),
   startTime: '09:00',
   businessDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+  linkedinProfileName: '',
   linkedinProfileUrl: '',
+  linkedinConnectionStatus: 'disconnected',
+  linkedinConnectedAt: null,
   weeklyConnectionLimit: 250,
   enabled: false
 };
