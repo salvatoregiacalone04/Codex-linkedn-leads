@@ -150,3 +150,16 @@ export const automationSettings = {
   weeklyConnectionLimit: 250,
   enabled: false
 };
+
+export const icpProfile = {
+  id: 'mock-icp-profile',
+  name: 'Default ICP',
+  targetRole: '',
+  industry: '',
+  companySize: '',
+  location: '',
+  seniority: '',
+  keywords: '',
+  excludedKeywords: '',
+  qualityPriority: ''
+};

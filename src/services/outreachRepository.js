@@ -1,4 +1,4 @@
-import { automationSettings, campaigns, leads, messages, tasks } from '../data/mockData';
+import { automationSettings, campaigns, icpProfile, leads, messages, tasks } from '../data/mockData';
 import { hasSupabaseConfig, supabase } from '../lib/supabaseClient';
 
 export async function getDashboardData() {
@@ -9,23 +9,33 @@ export async function getDashboardData() {
       campaigns,
       tasks,
       messages,
-      automationSettings
+      automationSettings,
+      icpProfile
     };
   }
 
-  const [leadsResult, campaignsResult, tasksResult, messagesResult, automationSettingsResult] = await Promise.all([
+  const [
+    leadsResult,
+    campaignsResult,
+    tasksResult,
+    messagesResult,
+    automationSettingsResult,
+    icpProfileResult
+  ] = await Promise.all([
     supabase.from('leads').select('*').order('last_touch', { ascending: false }),
     supabase.from('campaigns').select('*').order('created_at', { ascending: false }),
     supabase.from('tasks').select('*').order('due_date', { ascending: true }),
     supabase.from('message_templates').select('*').order('created_at', { ascending: false }),
-    supabase.from('automation_settings').select('*').order('created_at', { ascending: true }).limit(1).maybeSingle()
+    supabase.from('automation_settings').select('*').order('created_at', { ascending: true }).limit(1).maybeSingle(),
+    supabase.from('icp_profiles').select('*').order('created_at', { ascending: true }).limit(1).maybeSingle()
   ]);
 
   const error = leadsResult.error
     || campaignsResult.error
     || tasksResult.error
     || messagesResult.error
-    || automationSettingsResult.error;
+    || automationSettingsResult.error
+    || icpProfileResult.error;
 
   if (error) {
     throw error;
@@ -39,7 +49,10 @@ export async function getDashboardData() {
     messages: messagesResult.data.map(mapMessage),
     automationSettings: automationSettingsResult.data
       ? mapAutomationSettings(automationSettingsResult.data)
-      : automationSettings
+      : automationSettings,
+    icpProfile: icpProfileResult.data
+      ? mapIcpProfile(icpProfileResult.data)
+      : { ...icpProfile, id: null }
   };
 }
 
@@ -156,6 +169,33 @@ export async function updateAutomationSettings(id, settings) {
   return mapAutomationSettings(data);
 }
 
+export async function updateIcpProfile(id, profile) {
+  if (!hasSupabaseConfig) {
+    return { ...profile, id };
+  }
+
+  const row = {
+    name: profile.name || 'Default ICP',
+    target_role: profile.targetRole,
+    industry: profile.industry,
+    company_size: profile.companySize,
+    location: profile.location,
+    seniority: profile.seniority,
+    keywords: profile.keywords,
+    excluded_keywords: profile.excludedKeywords,
+    quality_priority: profile.qualityPriority
+  };
+
+  const query = id
+    ? supabase.from('icp_profiles').update(row).eq('id', id)
+    : supabase.from('icp_profiles').insert(row);
+
+  const { data, error } = await query.select().single();
+
+  if (error) throw error;
+  return mapIcpProfile(data);
+}
+
 function mapLead(lead) {
   return {
     id: lead.id,
@@ -204,6 +244,21 @@ function mapAutomationSettings(settings) {
     linkedinProfileUrl: settings.linkedin_profile_url || '',
     weeklyConnectionLimit: settings.weekly_connection_limit,
     enabled: settings.enabled
+  };
+}
+
+function mapIcpProfile(profile) {
+  return {
+    id: profile.id,
+    name: profile.name || 'Default ICP',
+    targetRole: profile.target_role || '',
+    industry: profile.industry || '',
+    companySize: profile.company_size || '',
+    location: profile.location || '',
+    seniority: profile.seniority || '',
+    keywords: profile.keywords || '',
+    excludedKeywords: profile.excluded_keywords || '',
+    qualityPriority: profile.quality_priority || ''
   };
 }
 

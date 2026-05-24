@@ -19,7 +19,12 @@ import {
   SlidersHorizontal,
 } from 'lucide-react';
 import { pipelineStages } from './data/mockData';
-import { getDashboardData, updateAutomationSettings, updateMessageTemplate } from './services/outreachRepository';
+import {
+  getDashboardData,
+  updateAutomationSettings,
+  updateIcpProfile,
+  updateMessageTemplate
+} from './services/outreachRepository';
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home },
@@ -63,6 +68,8 @@ export function App() {
   const [selectedBusinessDays, setSelectedBusinessDays] = useState(defaultBusinessDays);
   const [automationSettings, setAutomationSettings] = useState(null);
   const [automationSaveState, setAutomationSaveState] = useState('');
+  const [icpProfile, setIcpProfile] = useState(null);
+  const [icpSaveState, setIcpSaveState] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
   const [loadState, setLoadState] = useState({ loading: true, error: '' });
 
@@ -77,6 +84,9 @@ export function App() {
           setAutomationSettings(data.automationSettings);
           setSelectedTime(getDateFromAutomationSettings(data.automationSettings));
           setSelectedBusinessDays(getValidBusinessDays(data.automationSettings.businessDays));
+        }
+        if (data.icpProfile) {
+          setIcpProfile(data.icpProfile);
         }
         setLoadState({ loading: false, error: '' });
       })
@@ -131,6 +141,27 @@ export function App() {
     });
   };
 
+  const updateIcpField = (field, value) => {
+    setIcpProfile((currentProfile) => ({
+      ...getFallbackIcpProfile(currentProfile),
+      [field]: value
+    }));
+  };
+
+  const saveIcpProfile = async () => {
+    const nextProfile = getFallbackIcpProfile(icpProfile);
+
+    setIcpSaveState('Salvataggio...');
+
+    try {
+      const savedProfile = await updateIcpProfile(nextProfile.id, nextProfile);
+      setIcpProfile(savedProfile);
+      setIcpSaveState('ICP salvato');
+    } catch (error) {
+      setIcpSaveState(`Errore salvataggio: ${error.message}`);
+    }
+  };
+
   return (
     <main className="mobile-shell" aria-label="Dashboard mobile LinkedIn leads">
       <header className="topbar">
@@ -157,6 +188,10 @@ export function App() {
             selectedBusinessDays={selectedBusinessDays}
             setSelectedBusinessDays={updateAutomationBusinessDays}
             saveState={automationSaveState}
+            icpProfile={getFallbackIcpProfile(icpProfile)}
+            setIcpField={updateIcpField}
+            saveIcpProfile={saveIcpProfile}
+            icpSaveState={icpSaveState}
           />
         )}
         {activeTab === 'search' && <SearchPanel />}
@@ -187,6 +222,21 @@ function getValidBusinessDays(selectedDays) {
   const validDayIds = businessDays.map((day) => day.id);
   const safeDays = selectedDays?.filter((day) => validDayIds.includes(day)) || [];
   return safeDays.length > 0 ? safeDays : defaultBusinessDays;
+}
+
+function getFallbackIcpProfile(profile) {
+  return {
+    id: profile?.id,
+    name: profile?.name || 'Default ICP',
+    targetRole: profile?.targetRole || '',
+    industry: profile?.industry || '',
+    companySize: profile?.companySize || '',
+    location: profile?.location || '',
+    seniority: profile?.seniority || '',
+    keywords: profile?.keywords || '',
+    excludedKeywords: profile?.excludedKeywords || '',
+    qualityPriority: profile?.qualityPriority || ''
+  };
 }
 
 function getFallbackAutomationSettings(settings, date, selectedDays) {
@@ -514,7 +564,17 @@ const TimePickerInput = React.forwardRef(function TimePickerInput(
   );
 });
 
-function HomePanel({ date, setDate, selectedBusinessDays, setSelectedBusinessDays, saveState }) {
+function HomePanel({
+  date,
+  setDate,
+  selectedBusinessDays,
+  setSelectedBusinessDays,
+  saveState,
+  icpProfile,
+  setIcpField,
+  saveIcpProfile,
+  icpSaveState
+}) {
   return (
     <div className="home-stack">
       <TimePickerPanel
@@ -533,30 +593,68 @@ function HomePanel({ date, setDate, selectedBusinessDays, setSelectedBusinessDay
         </span>
         <ChevronDown size={20} aria-hidden="true" />
       </summary>
-      <form className="icp-form" onSubmit={(event) => event.preventDefault()}>
+      <form
+        className="icp-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void saveIcpProfile();
+        }}
+      >
         <IcpField
           label="Ruolo target"
           hint="Target role / job title"
           placeholder="Founder, CEO, Marketing Manager..."
+          value={icpProfile.targetRole}
+          onChange={(value) => setIcpField('targetRole', value)}
         />
-        <IcpField label="Settore" hint="Industry" placeholder="SaaS, Real Estate, Consulting..." />
-        <IcpSelect label="Dimensione azienda" hint="Company size" options={['1-10', '11-50', '51-200', '200+']} />
-        <IcpField label="Località" hint="Location" placeholder="Italy, Europe, United States..." />
+        <IcpField
+          label="Settore"
+          hint="Industry"
+          placeholder="SaaS, Real Estate, Consulting..."
+          value={icpProfile.industry}
+          onChange={(value) => setIcpField('industry', value)}
+        />
+        <IcpSelect
+          label="Dimensione azienda"
+          hint="Company size"
+          options={['1-10', '11-50', '51-200', '200+']}
+          value={icpProfile.companySize}
+          onChange={(value) => setIcpField('companySize', value)}
+        />
+        <IcpField
+          label="Localita"
+          hint="Location"
+          placeholder="Italy, Europe, United States..."
+          value={icpProfile.location}
+          onChange={(value) => setIcpField('location', value)}
+        />
         <IcpSelect
           label="Livello di seniority"
           hint="Seniority level"
           options={['Founder', 'C-Level', 'Manager', 'Specialist']}
+          value={icpProfile.seniority}
+          onChange={(value) => setIcpField('seniority', value)}
         />
-        <IcpField label="Parole chiave" hint="Keywords" placeholder="B2B, growth, sales, automation..." />
+        <IcpField
+          label="Parole chiave"
+          hint="Keywords"
+          placeholder="B2B, growth, sales, automation..."
+          value={icpProfile.keywords}
+          onChange={(value) => setIcpField('keywords', value)}
+        />
         <IcpField
           label="Parole chiave da escludere"
           hint="Excluded keywords"
           placeholder="student, intern, recruiter..."
+          value={icpProfile.excludedKeywords}
+          onChange={(value) => setIcpField('excludedKeywords', value)}
         />
         <IcpSelect
-          label="Priorità qualità lead"
+          label="Priorita qualita lead"
           hint="Lead quality priority"
           options={['Volume', 'Balanced', 'High quality only']}
+          value={icpProfile.qualityPriority}
+          onChange={(value) => setIcpField('qualityPriority', value)}
         />
 
         <button className="icp-submit" type="submit" aria-label="Salva ICP">
@@ -566,6 +664,7 @@ function HomePanel({ date, setDate, selectedBusinessDays, setSelectedBusinessDay
             <small>Save ICP</small>
           </span>
         </button>
+        {icpSaveState && <p className="data-status">{icpSaveState}</p>}
       </form>
       </details>
 
@@ -709,26 +808,37 @@ function AcrTrendChart() {
   );
 }
 
-function IcpField({ label, hint, placeholder, type = 'text', multiline = false }) {
+function IcpField({ label, hint, placeholder, type = 'text', multiline = false, value, onChange }) {
   return (
     <label className="icp-field">
       <span>{label}</span>
       <small>{hint}</small>
       {multiline ? (
-        <textarea placeholder={placeholder} rows={4} />
+        <textarea
+          placeholder={placeholder}
+          rows={4}
+          value={value}
+          onChange={(event) => onChange?.(event.target.value)}
+        />
       ) : (
-        <input type={type} placeholder={placeholder} min={type === 'number' ? '0' : undefined} />
+        <input
+          type={type}
+          placeholder={placeholder}
+          min={type === 'number' ? '0' : undefined}
+          value={value}
+          onChange={(event) => onChange?.(event.target.value)}
+        />
       )}
     </label>
   );
 }
 
-function IcpSelect({ label, hint, options }) {
+function IcpSelect({ label, hint, options, value, onChange }) {
   return (
     <label className="icp-field">
       <span>{label}</span>
       <small>{hint}</small>
-      <select defaultValue="">
+      <select value={value ?? ''} onChange={(event) => onChange?.(event.target.value)}>
         <option value="" disabled>
           Seleziona
         </option>
