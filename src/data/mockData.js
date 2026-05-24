@@ -140,3 +140,13 @@ export const messages = [
     body: 'Grazie per il collegamento. Sto mappando come team simili al vostro gestiscono prospecting e follow-up LinkedIn. Ha senso scambiarci due idee?'
   }
 ];
+
+export const automationSettings = {
+  id: 'mock-automation-settings',
+  startDate: new Date().toISOString().slice(0, 10),
+  startTime: '09:00',
+  businessDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+  linkedinProfileUrl: '',
+  weeklyConnectionLimit: 250,
+  enabled: false
+};

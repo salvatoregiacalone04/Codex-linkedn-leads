@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   Bell,
@@ -18,6 +18,8 @@ import {
   Settings,
   SlidersHorizontal,
 } from 'lucide-react';
+import { pipelineStages } from './data/mockData';
+import { getDashboardData, updateAutomationSettings, updateMessageTemplate } from './services/outreachRepository';
 
 const tabs = [
   { id: 'home', label: 'Home', icon: Home },
@@ -58,6 +60,76 @@ const defaultBusinessDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'frid
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedTime, setSelectedTime] = useState(() => new Date(new Date().setHours(9, 0, 0, 0)));
+  const [selectedBusinessDays, setSelectedBusinessDays] = useState(defaultBusinessDays);
+  const [automationSettings, setAutomationSettings] = useState(null);
+  const [automationSaveState, setAutomationSaveState] = useState('');
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loadState, setLoadState] = useState({ loading: true, error: '' });
+
+  useEffect(() => {
+    let isMounted = true;
+
+    getDashboardData()
+      .then((data) => {
+        if (!isMounted) return;
+        setDashboardData(data);
+        if (data.automationSettings) {
+          setAutomationSettings(data.automationSettings);
+          setSelectedTime(getDateFromAutomationSettings(data.automationSettings));
+          setSelectedBusinessDays(getValidBusinessDays(data.automationSettings.businessDays));
+        }
+        setLoadState({ loading: false, error: '' });
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        setLoadState({ loading: false, error: error.message });
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const saveAutomationSettings = async (nextSettings) => {
+    if (!nextSettings?.id) return;
+
+    setAutomationSaveState('Salvataggio...');
+
+    try {
+      const savedSettings = await updateAutomationSettings(nextSettings.id, nextSettings);
+      setAutomationSettings(savedSettings);
+      setAutomationSaveState('Salvato');
+    } catch (error) {
+      setAutomationSaveState(`Errore salvataggio: ${error.message}`);
+    }
+  };
+
+  const updateAutomationFromDate = (nextDate) => {
+    setSelectedTime(nextDate);
+    setAutomationSettings((currentSettings) => {
+      const nextSettings = {
+        ...getFallbackAutomationSettings(currentSettings, nextDate, selectedBusinessDays),
+        startDate: getDateInputValue(nextDate),
+        startTime: getTimeInputValue(nextDate)
+      };
+
+      void saveAutomationSettings(nextSettings);
+      return nextSettings;
+    });
+  };
+
+  const updateAutomationBusinessDays = (nextBusinessDays) => {
+    setSelectedBusinessDays(nextBusinessDays);
+    setAutomationSettings((currentSettings) => {
+      const nextSettings = {
+        ...getFallbackAutomationSettings(currentSettings, selectedTime, nextBusinessDays),
+        businessDays: nextBusinessDays
+      };
+
+      void saveAutomationSettings(nextSettings);
+      return nextSettings;
+    });
+  };
 
   return (
     <main className="mobile-shell" aria-label="Dashboard mobile LinkedIn leads">
@@ -74,11 +146,22 @@ export function App() {
         </button>
       </header>
 
+      {loadState.error && <p className="data-status">Backend non disponibile: {loadState.error}</p>}
+      {loadState.loading && <p className="data-status">Caricamento dati...</p>}
+
       <section className="content-area" aria-live="polite">
-        {activeTab === 'home' && <HomePanel date={selectedTime} setDate={setSelectedTime} />}
+        {activeTab === 'home' && (
+          <HomePanel
+            date={selectedTime}
+            setDate={updateAutomationFromDate}
+            selectedBusinessDays={selectedBusinessDays}
+            setSelectedBusinessDays={updateAutomationBusinessDays}
+            saveState={automationSaveState}
+          />
+        )}
         {activeTab === 'search' && <SearchPanel />}
-        {activeTab === 'pipeline' && <PipelinePanel />}
-        {activeTab === 'messages' && <MessagesPanel />}
+        {activeTab === 'pipeline' && <PipelinePanel leads={dashboardData?.leads || []} />}
+        {activeTab === 'messages' && <MessagesPanel messages={dashboardData?.messages || []} />}
         {activeTab === 'settings' && <SettingsPanel />}
       </section>
 
@@ -98,6 +181,32 @@ export function App() {
       </nav>
     </main>
   );
+}
+
+function getValidBusinessDays(selectedDays) {
+  const validDayIds = businessDays.map((day) => day.id);
+  const safeDays = selectedDays?.filter((day) => validDayIds.includes(day)) || [];
+  return safeDays.length > 0 ? safeDays : defaultBusinessDays;
+}
+
+function getFallbackAutomationSettings(settings, date, selectedDays) {
+  return {
+    id: settings?.id,
+    startDate: getDateInputValue(date),
+    startTime: getTimeInputValue(date),
+    businessDays: selectedDays,
+    linkedinProfileUrl: settings?.linkedinProfileUrl || '',
+    weeklyConnectionLimit: settings?.weeklyConnectionLimit || 250,
+    enabled: settings?.enabled || false
+  };
+}
+
+function getDateFromAutomationSettings(settings) {
+  const [hours = '09', minutes = '00'] = (settings.startTime || '09:00').split(':');
+  const date = settings.startDate ? new Date(`${settings.startDate}T00:00:00`) : new Date();
+
+  date.setHours(parseInt(getValidHour(hours), 10), parseInt(getValidMinuteOrSecond(minutes), 10), 0, 0);
+  return date;
 }
 
 function isValidHour(value) {
@@ -195,6 +304,10 @@ function getDateInputValue(date) {
   return `${year}-${month}-${day}`;
 }
 
+function getTimeInputValue(date) {
+  return `${getValidHour(String(date.getHours()))}:${getValidMinuteOrSecond(String(date.getMinutes()))}`;
+}
+
 function setDateByCalendarValue(date, value) {
   if (!value) return date;
 
@@ -215,18 +328,17 @@ function getBusinessDaysSummary(selectedDays) {
     .join(', ');
 }
 
-function TimePickerPanel({ date, setDate }) {
+function TimePickerPanel({ date, setDate, selectedBusinessDays, setSelectedBusinessDays, saveState }) {
   const hourRef = React.useRef(null);
   const minuteRef = React.useRef(null);
-  const [selectedBusinessDays, setSelectedBusinessDays] = useState(defaultBusinessDays);
   const [isBusinessDaysOpen, setIsBusinessDaysOpen] = useState(false);
 
   const toggleBusinessDay = (dayId) => {
-    setSelectedBusinessDays((currentDays) => (
-      currentDays.includes(dayId)
-        ? currentDays.filter((currentDay) => currentDay !== dayId)
-        : [...currentDays, dayId]
-    ));
+    const nextBusinessDays = selectedBusinessDays.includes(dayId)
+      ? selectedBusinessDays.filter((currentDay) => currentDay !== dayId)
+      : [...selectedBusinessDays, dayId];
+
+    setSelectedBusinessDays(nextBusinessDays);
   };
 
   return (
@@ -331,6 +443,7 @@ function TimePickerPanel({ date, setDate }) {
         <Play size={17} fill="currentColor" />
         Start automation
       </button>
+      {saveState && <p className="data-status">{saveState}</p>}
     </section>
   );
 }
@@ -401,10 +514,16 @@ const TimePickerInput = React.forwardRef(function TimePickerInput(
   );
 });
 
-function HomePanel({ date, setDate }) {
+function HomePanel({ date, setDate, selectedBusinessDays, setSelectedBusinessDays, saveState }) {
   return (
     <div className="home-stack">
-      <TimePickerPanel date={date} setDate={setDate} />
+      <TimePickerPanel
+        date={date}
+        setDate={setDate}
+        selectedBusinessDays={selectedBusinessDays}
+        setSelectedBusinessDays={setSelectedBusinessDays}
+        saveState={saveState}
+      />
 
       <details className="icp-card">
       <summary className="icp-summary">
@@ -633,15 +752,22 @@ function SearchPanel() {
   );
 }
 
-function PipelinePanel() {
+function PipelinePanel({ leads }) {
+  const stageCounts = useMemo(() => (
+    pipelineStages.map((stage) => ({
+      ...stage,
+      count: leads.filter((lead) => lead.status === stage.id).length
+    }))
+  ), [leads]);
+
   return (
     <article className="workspace-card pipeline-card">
       <PanelHeading title="Stato dei lead" icon={<SlidersHorizontal size={19} />} />
       <div className="stage-list">
-        {stages.map((stage) => (
-          <div className="stage-row" key={stage}>
-            <span>{stage}</span>
-            <strong>0</strong>
+        {stageCounts.map((stage) => (
+          <div className="stage-row" key={stage.id}>
+            <span>{stage.label}</span>
+            <strong>{stage.count}</strong>
           </div>
         ))}
       </div>
@@ -649,7 +775,68 @@ function PipelinePanel() {
   );
 }
 
-function MessagesPanel() {
+function MessagesPanel({ messages }) {
+  const [localMessages, setLocalMessages] = useState(messages);
+  const [saveState, setSaveState] = useState('');
+
+  useEffect(() => {
+    setLocalMessages(messages);
+  }, [messages]);
+
+  const updateLocalMessage = (id, body) => {
+    setLocalMessages((currentMessages) => (
+      currentMessages.map((message) => (
+        message.id === id ? { ...message, body } : message
+      ))
+    ));
+  };
+
+  const saveMessages = async () => {
+    setSaveState('Salvataggio...');
+
+    try {
+      await Promise.all(localMessages.map((message) => updateMessageTemplate(message.id, message)));
+      setSaveState('Messaggi salvati');
+    } catch (error) {
+      setSaveState(`Errore salvataggio: ${error.message}`);
+    }
+  };
+
+  if (localMessages.length > 0) {
+    return (
+      <article className="workspace-card messages-card">
+        <header className="messages-header">
+          <div>
+            <h2>Messaggi automation</h2>
+            <p>Configura i testi che l'automazione usera nei tuoi outreach LinkedIn</p>
+          </div>
+          <span>
+            <MessageSquareText size={18} />
+          </span>
+        </header>
+
+        <div className="message-template-list">
+          {localMessages.map((message) => (
+            <MessageTemplateCard
+              key={message.id}
+              title={message.title}
+              subtitle={message.channel}
+              value={message.body}
+              count={`${message.body.length} / 600`}
+              onChange={(body) => updateLocalMessage(message.id, body)}
+            />
+          ))}
+        </div>
+
+        <button className="messages-save" type="button" aria-label="Salva messaggi" onClick={saveMessages}>
+          <Save size={18} />
+          Salva messaggi
+        </button>
+        {saveState && <p className="data-status">{saveState}</p>}
+      </article>
+    );
+  }
+
   return (
     <article className="workspace-card messages-card">
       <header className="messages-header">
@@ -685,7 +872,7 @@ function MessagesPanel() {
   );
 }
 
-function MessageTemplateCard({ title, subtitle, placeholder, count }) {
+function MessageTemplateCard({ title, subtitle, placeholder, value, count, onChange }) {
   return (
     <section className="message-template-card" aria-label={title}>
       <header>
@@ -694,7 +881,12 @@ function MessageTemplateCard({ title, subtitle, placeholder, count }) {
           <p>{subtitle}</p>
         </div>
       </header>
-      <textarea placeholder={placeholder} rows={4} />
+      <textarea
+        placeholder={placeholder}
+        value={value}
+        rows={4}
+        onChange={(event) => onChange?.(event.target.value)}
+      />
       <div className="message-template-meta">
         <span>{count}</span>
         <small>Usa {'{{nome}}'} per personalizzare il messaggio</small>
