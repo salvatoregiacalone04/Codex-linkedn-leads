@@ -72,6 +72,7 @@ export function App() {
   const [icpSaveState, setIcpSaveState] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
   const [loadState, setLoadState] = useState({ loading: true, error: '' });
+  const icpSaveTimerRef = React.useRef(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -97,6 +98,7 @@ export function App() {
 
     return () => {
       isMounted = false;
+      window.clearTimeout(icpSaveTimerRef.current);
     };
   }, []);
 
@@ -112,6 +114,21 @@ export function App() {
     } catch (error) {
       setAutomationSaveState(`Errore salvataggio: ${error.message}`);
     }
+  };
+
+  const startAutomation = () => {
+    setAutomationSettings((currentSettings) => {
+      const nextSettings = {
+        ...getFallbackAutomationSettings(currentSettings, selectedTime, selectedBusinessDays),
+        startDate: getDateInputValue(selectedTime),
+        startTime: getTimeInputValue(selectedTime),
+        businessDays: selectedBusinessDays,
+        enabled: true
+      };
+
+      void saveAutomationSettings(nextSettings);
+      return nextSettings;
+    });
   };
 
   const updateAutomationFromDate = (nextDate) => {
@@ -141,15 +158,9 @@ export function App() {
     });
   };
 
-  const updateIcpField = (field, value) => {
-    setIcpProfile((currentProfile) => ({
-      ...getFallbackIcpProfile(currentProfile),
-      [field]: value
-    }));
-  };
-
-  const saveIcpProfile = async () => {
-    const nextProfile = getFallbackIcpProfile(icpProfile);
+  const saveIcpProfile = async (profile = icpProfile) => {
+    window.clearTimeout(icpSaveTimerRef.current);
+    const nextProfile = getFallbackIcpProfile(profile);
 
     setIcpSaveState('Salvataggio...');
 
@@ -160,6 +171,26 @@ export function App() {
     } catch (error) {
       setIcpSaveState(`Errore salvataggio: ${error.message}`);
     }
+  };
+
+  const queueIcpProfileSave = (nextProfile) => {
+    window.clearTimeout(icpSaveTimerRef.current);
+    setIcpSaveState('Modifiche non salvate...');
+    icpSaveTimerRef.current = window.setTimeout(() => {
+      void saveIcpProfile(nextProfile);
+    }, 800);
+  };
+
+  const updateIcpField = (field, value) => {
+    setIcpProfile((currentProfile) => {
+      const nextProfile = {
+        ...getFallbackIcpProfile(currentProfile),
+        [field]: value
+      };
+
+      queueIcpProfileSave(nextProfile);
+      return nextProfile;
+    });
   };
 
   const saveLinkedInAccount = async (account) => {
@@ -202,6 +233,8 @@ export function App() {
             selectedBusinessDays={selectedBusinessDays}
             setSelectedBusinessDays={updateAutomationBusinessDays}
             saveState={automationSaveState}
+            automationEnabled={Boolean(automationSettings?.enabled)}
+            startAutomation={startAutomation}
             icpProfile={getFallbackIcpProfile(icpProfile)}
             setIcpField={updateIcpField}
             saveIcpProfile={saveIcpProfile}
@@ -400,7 +433,15 @@ function getBusinessDaysSummary(selectedDays) {
     .join(', ');
 }
 
-function TimePickerPanel({ date, setDate, selectedBusinessDays, setSelectedBusinessDays, saveState }) {
+function TimePickerPanel({
+  date,
+  setDate,
+  selectedBusinessDays,
+  setSelectedBusinessDays,
+  saveState,
+  automationEnabled,
+  startAutomation
+}) {
   const hourRef = React.useRef(null);
   const minuteRef = React.useRef(null);
   const [isBusinessDaysOpen, setIsBusinessDaysOpen] = useState(false);
@@ -419,7 +460,7 @@ function TimePickerPanel({ date, setDate, selectedBusinessDays, setSelectedBusin
         <div>
           <h2>LinkedIn Outreach</h2>
           <p>
-            Status: <span>Ready</span>
+            Status: <span>{automationEnabled ? 'Active' : 'Ready'}</span>
           </p>
         </div>
         <div className="automation-icon-group" aria-hidden="true">
@@ -511,9 +552,9 @@ function TimePickerPanel({ date, setDate, selectedBusinessDays, setSelectedBusin
         )}
       </div>
 
-      <button className="automation-start" type="button">
+      <button className="automation-start" type="button" onClick={startAutomation}>
         <Play size={17} fill="currentColor" />
-        Start automation
+        {automationEnabled ? 'Automation active' : 'Start automation'}
       </button>
       {saveState && <p className="data-status">{saveState}</p>}
     </section>
@@ -592,6 +633,8 @@ function HomePanel({
   selectedBusinessDays,
   setSelectedBusinessDays,
   saveState,
+  automationEnabled,
+  startAutomation,
   icpProfile,
   setIcpField,
   saveIcpProfile,
@@ -605,6 +648,8 @@ function HomePanel({
         selectedBusinessDays={selectedBusinessDays}
         setSelectedBusinessDays={setSelectedBusinessDays}
         saveState={saveState}
+        automationEnabled={automationEnabled}
+        startAutomation={startAutomation}
       />
 
       <details className="icp-card">

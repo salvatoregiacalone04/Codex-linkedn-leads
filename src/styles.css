@@ -1256,6 +1256,13 @@ button {
   font-weight: 850;
 }
 
+.data-status {
+  margin: 0 16px 10px;
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: 750;
+}
+
 .empty-state {
   display: grid;
   place-items: center;
