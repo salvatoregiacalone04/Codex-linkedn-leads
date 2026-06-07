@@ -473,20 +473,20 @@ function TimePickerPanel({
         </div>
       </header>
 
-      <label className="automation-date-row">
+      <div className="automation-date-row">
         <span className="automation-time-label">Start date</span>
         <span className="date-picker-control">
-          <span className="date-picker-trigger">
-            <span className="date-picker-value">{getDateInputValue(date)}</span>
-            <input
-              type="date"
-              aria-label="Data di partenza automazione"
-              value={getDateInputValue(date)}
-              onChange={(event) => setDate(setDateByCalendarValue(date, event.target.value))}
-            />
-          </span>
+          <input
+            className="date-picker-input"
+            type="date"
+            aria-label="Data di partenza automazione"
+            value={getDateInputValue(date)}
+            onClick={(event) => event.currentTarget.showPicker?.()}
+            onFocus={(event) => event.currentTarget.showPicker?.()}
+            onChange={(event) => setDate(setDateByCalendarValue(date, event.target.value))}
+          />
         </span>
-      </label>
+      </div>
 
       <div className="automation-time-row">
         <span className="automation-time-label">Start outreach at</span>

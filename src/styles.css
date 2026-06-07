@@ -262,10 +262,6 @@ button {
   background: rgba(23, 19, 31, 0.72);
 }
 
-.automation-date-row {
-  cursor: pointer;
-}
-
 .automation-time-label {
   min-width: 0;
   flex: 1 1 auto;
@@ -283,60 +279,58 @@ button {
   flex: 0 0 121px;
 }
 
-.date-picker-trigger {
-  position: relative;
-  min-width: 0;
-  width: 121px;
+.date-picker-input {
+  width: 100%;
   height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid #453a58;
   border-radius: 8px;
-  background: linear-gradient(180deg, #1d1727, #14101b);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
-  animation: scheduler-input-glow 3.6s ease-in-out infinite;
-}
-
-.date-picker-value {
-  width: 100%;
+  outline: 0;
+  padding: 0 10px;
   color: #f8fafc;
+  color-scheme: dark;
+  background: linear-gradient(180deg, #1d1727, #14101b);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 12px;
   font-weight: 800;
   line-height: 1;
   text-align: center;
-  pointer-events: none;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.2);
+  animation: scheduler-input-glow 3.6s ease-in-out infinite;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.date-picker-control input {
+.date-picker-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  border: 0;
-  outline: 0;
-  padding: 0;
-  opacity: 0;
-  color: transparent;
-  color-scheme: dark;
-  background: transparent;
   cursor: pointer;
 }
 
-.date-picker-control input::-webkit-calendar-picker-indicator,
-.date-picker-control input::-webkit-inner-spin-button,
-.date-picker-control input::-webkit-clear-button {
+.date-picker-input::-webkit-inner-spin-button,
+.date-picker-input::-webkit-clear-button {
   display: none;
   appearance: none;
 }
 
-.date-picker-control input::-webkit-date-and-time-value {
+.date-picker-input::-webkit-date-and-time-value {
   margin: 0;
   text-align: center;
 }
 
-.date-picker-trigger:focus-within {
+.date-picker-input::-webkit-datetime-edit,
+.date-picker-input::-webkit-datetime-edit-fields-wrapper,
+.date-picker-input::-webkit-datetime-edit-text,
+.date-picker-input::-webkit-datetime-edit-month-field,
+.date-picker-input::-webkit-datetime-edit-day-field,
+.date-picker-input::-webkit-datetime-edit-year-field {
+  color: #f8fafc;
+}
+
+.date-picker-input:focus {
   border-color: #a78bfa;
   background: #241b32;
   animation: none;
@@ -1816,12 +1810,8 @@ button {
     flex-basis: 114px;
   }
 
-  .date-picker-trigger {
+  .date-picker-input {
     width: 114px;
-  }
-
-  .date-picker-value {
-    font-size: 12px;
   }
 
   .time-picker-controls {
